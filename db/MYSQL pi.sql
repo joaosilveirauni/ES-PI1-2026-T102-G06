@@ -30,5 +30,3 @@ VALUES ('Matheus Mesario', '12345678901', '1010', 'admin123', TRUE);
 INSERT INTO candidatos (nome, numero, partido) VALUES ('Candidato A', 11, 'Partido 1');
 INSERT INTO candidatos (nome, numero, partido) VALUES ('Candidato B', 22, 'Partido 2');
 
-
-
