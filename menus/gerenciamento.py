@@ -2,7 +2,6 @@ from services.eleitor import listar_eleitores, cadastrar_eleitor, buscar_eleitor
 from services.validacoes import pedir_cpf, pedir_titulo
 from services.auditoria import registrar_ocorrencia
 
-
 def menu_gerenciamento():
     opcao = ""
 
@@ -27,6 +26,7 @@ def menu_gerenciamento():
                 
                 if sucesso:
                     print("Eleitor cadastrado com sucesso!")
+                    registrar_ocorrencia(f"Cadastro: Eleitor {nome} (Título: {titulo}) foi registrado.")
                 else:
                     print("Erro ao cadastrar. Verifique se o CPF ou título já existe.")
 
@@ -53,8 +53,11 @@ def menu_gerenciamento():
                     print(f"CPF: {eleitor['cpf']}")
                     # print(f"Já votou? {'Sim' if eleitor['ja_votou'] else 'Não'}")
                     # fazer lógica de verificar se ja votou ou não
+                    registrar_ocorrencia(f"Consulta: Dados do eleitor {eleitor['nome']} foram visualizados.")
+
                 else:
                     print("Eleitor não encontrado com este título.")
+                    registrar_ocorrencia(f"Aviso: Tentativa de busca para o título {titulo_busca} falhou.")
 
             elif opcao == "0":
                 return
