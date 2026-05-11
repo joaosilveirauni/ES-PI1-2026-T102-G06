@@ -31,9 +31,9 @@ def menu_gerenciamento():
 
             elif opcao == "2":
                 eleitores = listar_eleitores()
-
+                # Mudei de "if not eleitores" para "if eleitores"
                 print("\n--- LISTA DE ELEITORES ---")
-                if not eleitores:
+                if eleitores:
                     for e in eleitores:
                         print(f"Nome: {e['nome']} | Título: {e['titulo_eleitor']}")
                 else:
