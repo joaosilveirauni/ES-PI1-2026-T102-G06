@@ -10,4 +10,3 @@ def submenu_votacao():
             opcao = input("Escolha: ")
     except:
         print("Opção Inválida!")
-        
