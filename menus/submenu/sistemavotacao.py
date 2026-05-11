@@ -1,3 +1,5 @@
+from services.auditoria import registrar_ocorrencia
+
 def submenu_votacao():
     opcao = ""
     
