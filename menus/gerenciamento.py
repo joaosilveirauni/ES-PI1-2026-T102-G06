@@ -1,5 +1,6 @@
 from services.eleitor import listar_eleitores, cadastrar_eleitor, buscar_eleitor_por_titulo
 from services.validacoes import pedir_cpf, pedir_titulo
+from services.auditoria import registrar_ocorrencia
 
 
 def menu_gerenciamento():
