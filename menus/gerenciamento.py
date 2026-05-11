@@ -34,10 +34,11 @@ def menu_gerenciamento():
 
                 print("\n--- LISTA DE ELEITORES ---")
                 if not eleitores:
-                    print("Nenhum eleitor encontrado.")
-                else:
                     for e in eleitores:
                         print(f"Nome: {e['nome']} | Título: {e['titulo_eleitor']}")
+                else:
+                        print("Nenhum eleitor encontrado.")
+
 
             elif opcao == "3":
                 print("\n--- BUSCA DE ELEITOR ---")
