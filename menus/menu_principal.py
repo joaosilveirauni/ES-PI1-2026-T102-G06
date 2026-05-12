@@ -7,8 +7,8 @@ def menu_principal():
     try:
         while opcao != "0":
             print("\n=== MENU PRINCIPAL ===")
-            print("1 - Gerenciamento")
-            print("2 - Votação")
+            print("1 - Gerenciar")
+            print("2 - Votar")
             print("0 - Sair")
 
             opcao = input("Escolha: ")
