@@ -16,7 +16,7 @@ def menu_gerenciamento():
             opcao = input("Escolha: ")
 
             if opcao == "1":
-                print("\n--- CADASTRO DE ELEITOR ---")
+                print("\n=== CADASTRO DE ELEITOR ===")
                 nome = input("Nome completo: ")
                 cpf = pedir_cpf()
                 titulo = pedir_titulo()
@@ -33,7 +33,7 @@ def menu_gerenciamento():
             elif opcao == "2":
                 eleitores = listar_eleitores()
                 # Mudei de "if not eleitores" para "if eleitores"
-                print("\n--- LISTA DE ELEITORES ---")
+                print("\n=== LISTA DE ELEITORES ===")
                 if eleitores:
                     for e in eleitores:
                         print(f"Nome: {e['nome']} | Título: {e['titulo_eleitor']}")
@@ -42,7 +42,7 @@ def menu_gerenciamento():
 
 
             elif opcao == "3":
-                print("\n--- BUSCA DE ELEITOR ---")
+                print("\n=== BUSCA DE ELEITOR ===")
                 titulo_busca = input("Digite o Título de Eleitor: ")
                 
                 eleitor = buscar_eleitor_por_titulo(titulo_busca)
