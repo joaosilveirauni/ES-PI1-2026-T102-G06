@@ -1,7 +1,6 @@
 from db.conexao import conectar
 
 def listar_eleitores():
-    """Retorna uma lista com nome e título de todos os eleitores."""
     conexao = conectar()
     
     if not conexao:
@@ -20,7 +19,6 @@ def listar_eleitores():
             conexao.close()
 
 def cadastrar_eleitor(nome, cpf, titulo, chave):
-    """Insere um novo eleitor no banco de dados."""
     conexao = conectar()
     if not conexao:
         return False
@@ -42,7 +40,6 @@ def cadastrar_eleitor(nome, cpf, titulo, chave):
             conexao.close()
 
 def buscar_eleitor_por_titulo(titulo):
-    """Busca os dados completos de um eleitor através do título."""
     conexao = conectar()
     if not conexao:
         return None
