@@ -30,5 +30,5 @@ def submenu_votacao():
                 print("Opção Inválida!")
 
     except:
-        print("Opção Inválida!")
+        print("Opção Inválida!!")
         
