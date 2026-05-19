@@ -1,4 +1,4 @@
-# PI1-LAD.PY
+# Trabalho - PI1-LAD.PY
 Repositório para o Projeto Integrador 1.   
 Desenvolvimento do Sistema LAD.PY.    
 
@@ -9,15 +9,15 @@ O sistema foi projetado para assegurar a identificação rigorosa dos participan
     
 ## 2. Equipe de Desenvolvimento   
 **O projeto foi desenvolvido pelos seguintes integrantes:**     
-João Pedro Silveira de Souza   
-Luiz Gustavo Urias Vieira   
-Matheus Alves Kusuki de Almeida   
-Matheus Milanez da Silva    
-Murilo Henrique de Oliveira Joaquim    
+João Pedro Silveira de Souza ()   
+Luiz Gustavo Urias Vieira (26005065)   
+Matheus Alves Kusuki de Almeida ()   
+Matheus Milanez da Silva ()    
+Murilo Henrique de Oliveira Joaquim ()    
 
 ## 4. Tecnologias e Ferramentas Utilizadas    
 **Para a construção de uma solução profissional e escalável, foram selecionadas tecnologias padrão de mercado:**   
 - **Ambiente de Desenvolvimento VSCode:** Utilizada para desenvolver todo o código do projeto.    
 - **Linguagem Python 3.x:** Utilizada como base para toda a lógica estrutural e interface de usuário via terminal.    
 - **MySQL:** Sistema de Gerenciamento de Banco de Dados (SGBD) utilizado para o armazenamento persistente de eleitores, candidatos e votos.     
-- **Git & GitHub:** Ferramentas cruciais para o controle de versão e a colaboração organizada da equipe através do GitHub Projects.     
+- **Git & GitHub:** Ferramentas cruciais para o controle de versão e a colaboração organizada da equipe através do GitHub Projects.
