@@ -9,8 +9,7 @@ def menu_votacao():
         while opcao != "0":
             print("\n=== VOTAÇÃO ===")
             print("1 - Abrir votação")
-            print("2 - Resultados")
-            print("3 - Auditoria")
+            print("2 - Ver Resultados")
             print("0 - Voltar")
             
             opcao = input("Escolha: ")
@@ -21,8 +20,6 @@ def menu_votacao():
                 submenu_votacao()
             elif opcao == "2":
                 resultados()
-            elif opcao == "3":
-                auditoria()
             else:
                 print("Opção Inválida!")
     except:
