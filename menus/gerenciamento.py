@@ -11,6 +11,7 @@ def menu_gerenciamento():
             print("1 - Cadastrar Eleitor")
             print("2 - Listar Eleitores")
             print("3 - Buscar Eleitor")
+            print("4 - Ver Auditoria")
             print("0 - Voltar")
 
             opcao = input("Escolha: ")
@@ -58,6 +59,9 @@ def menu_gerenciamento():
                 else:
                     print("Eleitor não encontrado com este título.")
                     registrar_ocorrencia(f"Aviso: Tentativa de busca para o título {titulo_busca} falhou.")
+
+            elif opcao == "3":
+                auditoria()
 
             elif opcao == "0":
                 return
