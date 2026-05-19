@@ -8,7 +8,6 @@ O projeto LAD.PY surge como uma iniciativa acadêmica no âmbito do primeiro sem
 O sistema foi projetado para assegurar a identificação rigorosa dos participantes e o sigilo dos votos, utilizando conceitos de Álgebra Linear para simular camadas de proteção. Além disso, a aplicação incorpora mecanismos de rastreabilidade, como registros de eventos (*logs*) e relatórios de apuração, garantindo que todo o processo seja ético e tecnicamente auditável.
     
 ## 2. Equipe de Desenvolvimento   
-**O projeto foi desenvolvido pelos seguintes integrantes:**     
 João Pedro Silveira de Souza ()   
 Luiz Gustavo Urias Vieira (26005065)   
 Matheus Alves Kusuki de Almeida ()   
@@ -16,8 +15,7 @@ Matheus Milanez da Silva ()
 Murilo Henrique de Oliveira Joaquim ()    
 
 ## 4. Tecnologias e Ferramentas Utilizadas    
-**Para a construção de uma solução profissional e escalável, foram selecionadas tecnologias padrão de mercado:**   
-- **VSCode:** Ambiente de Desenvolvimento. Utilizada para desenvolver todo o código do projeto.    
-- **Python 3.x:** Linguagem de programação. Utilizada como base para toda a lógica estrutural e interface de usuário via terminal.    
+- **VSCode:** Ambiente de Desenvolvimento utilizada para desenvolver todo o código do projeto.    
+- **Python 3.x:** Linguagem de programação utilizada como base para toda a lógica estrutural e interface de usuário via terminal.    
 - **MySQL:** Sistema de Gerenciamento de Banco de Dados utilizado para o armazenamento de eleitores, candidatos e votos.     
 - **Git e GitHub:** Ferramentas para o controle de versão e a colaboração organizada da equipe.
