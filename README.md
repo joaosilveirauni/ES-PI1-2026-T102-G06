@@ -1,6 +1,6 @@
 # Trabalho - PI1-LAD.PY
 Repositório para o Projeto Integrador 1.   
-Desenvolvimento do Sistema LAD.PY.    
+*Desenvolvimento do Sistema LAD.PY.*    
 
 ## 1. Introdução e Descrição do Projeto:   
 O projeto LAD.PY surge como uma iniciativa acadêmica no âmbito do primeiro semestre de Engenharia de Software, com o objetivo de desenvolver o backend de um sistema de votação digital fictício. Mais do que uma simples ferramenta de coleta de dados, a proposta foca na convergência de três pilares fundamentais da computação moderna: a lógica de programação, a persistência de dados em ambientes relacionais e a aplicação de fundamentos matemáticos para a segurança da informação.      
@@ -17,7 +17,7 @@ Murilo Henrique de Oliveira Joaquim ()
 
 ## 4. Tecnologias e Ferramentas Utilizadas    
 **Para a construção de uma solução profissional e escalável, foram selecionadas tecnologias padrão de mercado:**   
-- **Ambiente de Desenvolvimento VSCode:** Utilizada para desenvolver todo o código do projeto.    
-- **Linguagem Python 3.x:** Utilizada como base para toda a lógica estrutural e interface de usuário via terminal.    
-- **MySQL:** Sistema de Gerenciamento de Banco de Dados (SGBD) utilizado para o armazenamento persistente de eleitores, candidatos e votos.     
-- **Git & GitHub:** Ferramentas cruciais para o controle de versão e a colaboração organizada da equipe através do GitHub Projects.
+- **VSCode:** Ambiente de Desenvolvimento. Utilizada para desenvolver todo o código do projeto.    
+- **Python 3.x:** Linguagem de programação. Utilizada como base para toda a lógica estrutural e interface de usuário via terminal.    
+- **MySQL:** Sistema de Gerenciamento de Banco de Dados utilizado para o armazenamento de eleitores, candidatos e votos.     
+- **Git e GitHub:** Ferramentas para o controle de versão e a colaboração organizada da equipe.
