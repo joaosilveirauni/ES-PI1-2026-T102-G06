@@ -29,7 +29,7 @@ def listar_eleitores():
 
     try:
         cursor = conexao.cursor(dictionary=True)
-        cursor.execute("SELECT nome, titulo_eleitor FROM eleitores")
+        cursor.execute("SELECT nome, cpf, titulo_eleitor, is_mesario, ja_votou FROM eleitores")
         dados = cursor.fetchall()
         return dados
     except Exception as erro:
@@ -96,6 +96,54 @@ def buscar_eleitor_por_cpf(cpf):
     except Exception as erro:
         print("Erro na busca por CPF:", erro)
         return None
+    finally:
+        if conexao:
+            conexao.close()
+
+
+def editar_eleitor(titulo_atual, novo_nome, novo_cpf, novo_titulo):
+    conexao = conectar()
+
+    if not conexao:
+        return False
+
+    try:
+        cursor = conexao.cursor()
+        sql = "UPDATE eleitores SET nome = %s, cpf = %s, titulo_eleitor = %s WHERE titulo_eleitor = %s"
+        valores = (novo_nome, novo_cpf, novo_titulo, titulo_atual)
+        cursor.execute(sql, valores)
+        conexao.commit()
+
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
+    except Exception as erro:
+        print("Erro ao editar eleitor:", erro)
+        return False
+    finally:
+        if conexao:
+            conexao.close()
+
+
+def remover_eleitor(titulo):
+    conexao = conectar()
+
+    if not conexao:
+        return False
+
+    try:
+        cursor = conexao.cursor()
+        cursor.execute("DELETE FROM eleitores WHERE titulo_eleitor = %s", (titulo,))
+        conexao.commit()
+
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
+    except Exception as erro:
+        print("Erro ao remover eleitor:", erro)
+        return False
     finally:
         if conexao:
             conexao.close()
