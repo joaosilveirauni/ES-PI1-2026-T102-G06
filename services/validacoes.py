@@ -66,7 +66,7 @@ def pedir_cpf():
     cpf = cpf.replace(".", "").replace("-", "")
  
     while not validar_cpf(cpf):
-        print("❌ CPF inválido! Tente novamente.")
+        print("CPF inválido! Tente novamente.")
         cpf = input("Digite o CPF: ")
         cpf = cpf.replace(".", "").replace("-", "")
 
@@ -141,7 +141,7 @@ def pedir_titulo():
     titulo = input("Digite o Título de Eleitor (12 dígitos): ")
  
     while not validar_titulo(titulo):
-        print("❌ Título inválido! Tente novamente.")
+        print("Título inválido! Tente novamente.")
         titulo = input("Digite o Título de Eleitor (12 dígitos): ")
  
     return titulo
