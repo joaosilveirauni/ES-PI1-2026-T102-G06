@@ -1,4 +1,4 @@
-from db.eleitores import listar_resultado_votacao, buscar_votos_brancos_e_nulos
+from services.eleitor import listar_resultado_votacao, buscar_votos_brancos_e_nulos
 
 def resultados():
     opcao = ""
