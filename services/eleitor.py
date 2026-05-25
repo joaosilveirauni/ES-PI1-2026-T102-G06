@@ -1,3 +1,4 @@
+from services.criptografia import criptografar_cpf, descriptografa_cpf
 from db.conexao import conectar
 import random
 
@@ -47,11 +48,15 @@ def cadastrar_eleitor(nome, cpf, titulo, is_mesario):
         return None
 
     chave = gerar_chave_acesso(nome)
+    cpf_cifrado = criptografar_cpf(cpf)
+    cpf_cifrado = ''.join(str(n) for n in cpf_cifrado) # Converte a lista para uma string
+    cpf_cifrado = ''.join(str(n) for n in cpf_cifrado)
+    print(f"CPF cifrado: {cpf_cifrado} | Tamanho: {len(cpf_cifrado)}")  # linha 53
 
     try:
         cursor = conexao.cursor()
         sql = "INSERT INTO eleitores (nome, cpf, titulo_eleitor, chave_acesso, is_mesario) VALUES (%s, %s, %s, %s, %s)"
-        valores = (nome, cpf, titulo, chave, is_mesario)
+        valores = (nome, cpf_cifrado, titulo, chave, is_mesario)
         cursor.execute(sql, valores)
         conexao.commit()
         return chave
@@ -88,9 +93,12 @@ def buscar_eleitor_por_cpf(cpf):
     if not conexao:
         return None
 
+    cpf_cifrado = criptografar_cpf(cpf)
+    cpf_cifrado = ''.join(str(n) for n in cpf_cifrado) # Converte a lista para uma string
+
     try:
         cursor = conexao.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM eleitores WHERE cpf = %s", (cpf,))
+        cursor.execute("SELECT * FROM eleitores WHERE cpf = %s", (cpf_cifrado,))
         resultado = cursor.fetchone()
         return resultado
     except Exception as erro:
@@ -154,11 +162,15 @@ def autenticar_eleitor(titulo, primeiros_digitos_cpf, chave_digitada):
 
     if not eleitor:
         return None
+    
+    # descriptografa o CPF do banco para comparar
+    cpf_original = descriptografa_cpf([int(d) for d in eleitor["cpf"]])
 
-    if not eleitor["cpf"].startswith(primeiros_digitos_cpf):
+    if not cpf_original.startswith(primeiros_digitos_cpf):
         return None
 
     if eleitor["chave_acesso"] != chave_digitada.upper():
         return None
+    
 
     return eleitor

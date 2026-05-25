@@ -33,7 +33,7 @@ def criptografar_cpf(cpf):
         resultado = multiplicar_bloco(bloco)
         cifrado = cifrado + resultado
     
-    return cifrado
+    return ''.join(chr(ord('A') + n) for n in cifrado)
 
 
 def multiplicar_bloco_inverso(bloco):
@@ -45,6 +45,7 @@ def multiplicar_bloco_inverso(bloco):
     return resultado
 
 def descriptografa_cpf(cifrado):
+    vetor = [ord(c) - ord('A') for c in cifrado]
     original =  []
 
     for i in range(0, 12, 3):

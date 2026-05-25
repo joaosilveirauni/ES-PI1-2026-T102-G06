@@ -6,7 +6,7 @@ USE ladpy;
 CREATE TABLE eleitores (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
-    cpf VARCHAR(11) NOT NULL UNIQUE,
+    cpf VARCHAR(24) NOT NULL UNIQUE,
     titulo_eleitor VARCHAR(12) NOT NULL UNIQUE,
     chave_acesso VARCHAR(20) NOT NULL,
     ja_votou BOOLEAN DEFAULT FALSE,
@@ -30,12 +30,6 @@ data_voto timestamp default current_timestamp,
 foreign key (eleitor_id) references eleitores(id),
 foreign key (candidato_id) references candidatos(id)
 );
-
-insert into eleitores (nome, cpf, titulo_eleitor, chave_acesso, is_mesario)
-values ('Matheus Mesario', '52998224725', '004356870906', 'MAS1234', true);
-
-insert into eleitores (nome, cpf, titulo_eleitor, chave_acesso, is_mesario)
-values ('João Silva', '12345678909', '012345670698', 'JOS5678', false);
 
 INSERT INTO candidatos (nome, numero, partido) VALUES ('Candidato A', 11, 'Partido 1');
 INSERT INTO candidatos (nome, numero, partido) VALUES ('Candidato B', 22, 'Partido 2');
