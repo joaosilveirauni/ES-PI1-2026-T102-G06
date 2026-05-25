@@ -10,7 +10,7 @@ O sistema foi projetado para assegurar a identificação rigorosa dos participan
 ## Equipe de Desenvolvimento   
 - João Pedro Silveira de Souza ()   
 - Luiz Gustavo Urias Vieira (26005065)   
-- Matheus Alves Kusuki de Almeida ()   
+- Matheus Alves Kusuki de Almeida (26007007)   
 - Matheus Milanez da Silva ()    
 - Murilo Henrique de Oliveira Joaquim ()    
 

@@ -1,6 +1,7 @@
 from services.criptografia import criptografar_cpf, descriptografa_cpf
 from db.conexao import conectar
 import random
+from db.conexao import conectar
 
 
 def gerar_chave_acesso(nome):
@@ -15,22 +16,21 @@ def gerar_chave_acesso(nome):
     while len(prefixo) < 3:
         prefixo = prefixo + "X"
 
-    sufixo = ""
-    for i in range(5):
-        sufixo = sufixo + str(random.randint(0, 9))
+    sufixo = "".join(str(random.randint(0, 9)) for _ in range(5))
 
     return prefixo + sufixo
 
 
 def listar_eleitores():
     conexao = conectar()
-
     if not conexao:
         return []
 
     try:
         cursor = conexao.cursor(dictionary=True)
-        cursor.execute("SELECT nome, cpf, titulo_eleitor, is_mesario, ja_votou FROM eleitores")
+        cursor.execute(
+            "SELECT nome, cpf, titulo_eleitor, is_mesario, ja_votou FROM eleitores"
+        )
         dados = cursor.fetchall()
         return dados
     except Exception as erro:
@@ -42,8 +42,11 @@ def listar_eleitores():
 
 
 def cadastrar_eleitor(nome, cpf, titulo, is_mesario):
-    conexao = conectar()
+    if buscar_eleitor_por_cpf(cpf) or buscar_eleitor_por_titulo(titulo):
+        print("Erro: Já existe um eleitor cadastrado com este CPF ou Título.")
+        return None
 
+    conexao = conectar()
     if not conexao:
         return None
 
@@ -70,17 +73,18 @@ def cadastrar_eleitor(nome, cpf, titulo, is_mesario):
 
 def buscar_eleitor_por_titulo(titulo):
     conexao = conectar()
-
     if not conexao:
         return None
 
     try:
         cursor = conexao.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM eleitores WHERE titulo_eleitor = %s", (titulo,))
+        cursor.execute(
+            "SELECT * FROM eleitores WHERE titulo_eleitor = %s", (titulo,)
+        )
         resultado = cursor.fetchone()
         return resultado
     except Exception as erro:
-        print("Erro na busca:", erro)
+        print("Erro na busca por título:", erro)
         return None
     finally:
         if conexao:
@@ -89,7 +93,6 @@ def buscar_eleitor_por_titulo(titulo):
 
 def buscar_eleitor_por_cpf(cpf):
     conexao = conectar()
-
     if not conexao:
         return None
 
@@ -111,21 +114,19 @@ def buscar_eleitor_por_cpf(cpf):
 
 def editar_eleitor(titulo_atual, novo_nome, novo_cpf, novo_titulo):
     conexao = conectar()
-
     if not conexao:
         return False
 
+    nova_chave = gerar_chave_acesso(novo_nome)
+
     try:
         cursor = conexao.cursor()
-        sql = "UPDATE eleitores SET nome = %s, cpf = %s, titulo_eleitor = %s WHERE titulo_eleitor = %s"
-        valores = (novo_nome, novo_cpf, novo_titulo, titulo_atual)
+        sql = "UPDATE eleitores SET nome = %s, cpf = %s, titulo_eleitor = %s, chave_acesso = %s WHERE titulo_eleitor = %s"
+        valores = (novo_nome, novo_cpf, novo_titulo, nova_chave, titulo_atual)
         cursor.execute(sql, valores)
         conexao.commit()
 
-        if cursor.rowcount > 0:
-            return True
-        else:
-            return False
+        return cursor.rowcount > 0
     except Exception as erro:
         print("Erro ao editar eleitor:", erro)
         return False
@@ -136,19 +137,17 @@ def editar_eleitor(titulo_atual, novo_nome, novo_cpf, novo_titulo):
 
 def remover_eleitor(titulo):
     conexao = conectar()
-
     if not conexao:
         return False
 
     try:
         cursor = conexao.cursor()
-        cursor.execute("DELETE FROM eleitores WHERE titulo_eleitor = %s", (titulo,))
+        cursor.execute(
+            "DELETE FROM eleitores WHERE titulo_eleitor = %s", (titulo,)
+        )
         conexao.commit()
 
-        if cursor.rowcount > 0:
-            return True
-        else:
-            return False
+        return cursor.rowcount > 0
     except Exception as erro:
         print("Erro ao remover eleitor:", erro)
         return False
@@ -169,7 +168,7 @@ def autenticar_eleitor(titulo, primeiros_digitos_cpf, chave_digitada):
     if not cpf_original.startswith(primeiros_digitos_cpf):
         return None
 
-    if eleitor["chave_acesso"] != chave_digitada.upper():
+    if eleitor["chave_acesso"].strip() != chave_digitada.strip().upper():
         return None
     
 
