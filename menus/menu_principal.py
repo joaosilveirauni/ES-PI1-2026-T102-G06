@@ -4,8 +4,8 @@ from menus.votacao import menu_votacao
 def menu_principal():
     opcao = ""
 
-    try:
-        while opcao != "0":
+    while opcao != "0":
+        try:
             print("\n=== MENU PRINCIPAL ===")
             print("1 - Gerenciamento")
             print("2 - Votação")
@@ -21,5 +21,5 @@ def menu_principal():
                 print("Saindo...")
             else:
                 print("Opção inválida!")
-    except:
-        print("Opção Inválida!")
+        except:
+            print("Opção Inválida!")
