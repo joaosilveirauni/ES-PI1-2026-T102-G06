@@ -1,12 +1,9 @@
 
-from db.conexao import conectar
 from services.criptografia import (
     criptografar_cpf,
-    descriptografar_cpf,
-    gerar_chave_acesso,
+    descriptografa_cpf,    
     criptografar_chave
 )
-
 
 
 def cadastrar_eleitor(nome, cpf, titulo, is_mesario):
