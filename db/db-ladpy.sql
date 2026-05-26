@@ -22,12 +22,10 @@ partido varchar(50) not null
 
 CREATE TABLE votos(
 id int primary key auto_increment,
-eleitor_id int not null,
 candidato_id int,
 tipo ENUM('VALIDO', 'NULO') not null,
 protocolo varchar(30) not null,
 data_voto timestamp default current_timestamp,
-foreign key (eleitor_id) references eleitores(id),
 foreign key (candidato_id) references candidatos(id)
 );
 
