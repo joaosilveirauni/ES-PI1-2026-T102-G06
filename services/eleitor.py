@@ -116,3 +116,73 @@ def buscar_eleitor_por_cpf(cpf):
  
     finally:
         conexao.close()
+def editar_eleitor(titulo_atual, novo_nome, novo_cpf, novo_titulo, cpf_foi_alterado):
+    """
+    Atualiza os dados de um eleitor existente.
+ 
+    PARÂMETRO NOVO: cpf_foi_alterado (True ou False)
+    - Se True:  o novo_cpf é um CPF limpo (vindo do usuário) → criptografar antes de salvar.
+    - Se False: o novo_cpf já está criptografado (veio do banco sem alteração) → salvar direto.
+ 
+    Isso evita o bug de criptografar o CPF duas vezes.
+    """
+    conexao = conectar()
+ 
+    if not conexao:
+        return False
+ 
+    try:
+        # Só criptografa se o CPF foi de fato alterado pelo usuário
+        if cpf_foi_alterado:
+            cpf_para_salvar = criptografar_cpf(novo_cpf)
+        else:
+            cpf_para_salvar = novo_cpf  # Já está criptografado, usa como está
+ 
+        cursor = conexao.cursor()
+        sql = """
+            UPDATE eleitores
+            SET nome = %s, cpf = %s, titulo_eleitor = %s
+            WHERE titulo_eleitor = %s
+        """
+        cursor.execute(sql, (novo_nome, cpf_para_salvar, novo_titulo, titulo_atual))
+        conexao.commit()
+ 
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
+ 
+    except Exception as erro:
+        print("Erro ao editar eleitor:", erro)
+        return False
+ 
+    finally:
+        conexao.close()
+ 
+ 
+def remover_eleitor(titulo):
+    """
+    Remove um eleitor do banco pelo título eleitoral.
+    Retorna True se removido com sucesso, False caso contrário.
+    """
+    conexao = conectar()
+ 
+    if not conexao:
+        return False
+ 
+    try:
+        cursor = conexao.cursor()
+        cursor.execute("DELETE FROM eleitores WHERE titulo_eleitor = %s", (titulo,))
+        conexao.commit()
+ 
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
+ 
+    except Exception as erro:
+        print("Erro ao remover eleitor:", erro)
+        return False
+ 
+    finally:
+        conexao.close()
