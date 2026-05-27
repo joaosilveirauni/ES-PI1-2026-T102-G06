@@ -44,8 +44,8 @@ def resultados():
                 print(f"Votos Brancos: {votos_especiais['brancos']}")
                 print(f"Votos Nulos: {votos_especiais['nulos']}")
                 print("="*30)
-
-           elif opcao == "2":
+                
+            elif opcao == "2":
                 print("\n" + "="*30)
                 print("     ESTATÍSTICA DE COMPARECIMENTO")
                 print("="*30)
