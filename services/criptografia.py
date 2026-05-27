@@ -54,3 +54,21 @@ def descriptografa_cpf(cifrado):
         original = original + resultado
     
     return ''.join(str(n) for n in original[:11])
+
+def criptografar_chave(chave):
+    
+    chave = str(chave).upper()
+    
+    vetor = [ord(c) % 26 for c in chave]
+    
+    while len(vetor) % 3 != 0:
+        vetor.append(0)
+        
+    cifrado = []
+    
+    for i in range(0, len(vetor), 3):
+        bloco = vetor[i:i+3]
+        resultado = multiplicar_bloco(bloco)
+        cifrado = cifrado + resultado
+        
+    return ''.join(chr(ord('A') + n) for n in cifrado)
