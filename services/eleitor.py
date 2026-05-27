@@ -1,43 +1,28 @@
-
+from db.conexao import conectar
 from services.criptografia import (
     criptografar_cpf,
-    descriptografa_cpf,    
+    descriptografa_cpf,
+    gerar_chave_acesso,
     criptografar_chave
 )
 
 
 def cadastrar_eleitor(nome, cpf, titulo, is_mesario):
-    """
-    Cadastra um novo eleitor no banco.
-    - Criptografa o CPF antes de salvar.
-    - Gera e criptografa a chave de acesso.
-    - Retorna a chave ORIGINAL para exibir ao usuário (apenas uma vez).
-    - Retorna None se houver erro (ex: CPF ou título duplicado).
-    """
     conexao = conectar()
 
     if not conexao:
         return None
 
     try:
-        # Criptografa o CPF para armazenar de forma segura
         cpf_criptografado = criptografar_cpf(cpf)
-
-        # Gera a chave de acesso a partir do nome do eleitor
         chave_original = gerar_chave_acesso(nome)
-
-        # Criptografa a chave antes de salvar no banco
         chave_criptografada = criptografar_chave(chave_original)
 
         cursor = conexao.cursor()
-        sql = """
-            INSERT INTO eleitores (nome, cpf, titulo_eleitor, chave_acesso, is_mesario)
-            VALUES (%s, %s, %s, %s, %s)
-        """
+        sql = "INSERT INTO eleitores (nome, cpf, titulo_eleitor, chave_acesso, is_mesario) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(sql, (nome, cpf_criptografado, titulo, chave_criptografada, is_mesario))
         conexao.commit()
 
-        # Retorna a chave original — ela só aparece neste momento
         return chave_original
 
     except Exception as erro:
@@ -48,12 +33,7 @@ def cadastrar_eleitor(nome, cpf, titulo, is_mesario):
         conexao.close()
 
 
-
 def listar_eleitores():
-    """
-    Retorna todos os eleitores cadastrados.
-    O CPF não é incluído na listagem por segurança (dado sensível).
-    """
     conexao = conectar()
 
     if not conexao:
@@ -61,14 +41,7 @@ def listar_eleitores():
 
     try:
         cursor = conexao.cursor(dictionary=True)
-
-        # Não seleciona o CPF — dado sensível não deve aparecer na listagem geral
-        cursor.execute("""
-            SELECT id, nome, titulo_eleitor, is_mesario, ja_votou
-            FROM eleitores
-            ORDER BY nome
-        """)
-
+        cursor.execute("SELECT id, nome, titulo_eleitor, is_mesario, ja_votou FROM eleitores ORDER BY nome")
         return cursor.fetchall()
 
     except Exception as erro:
@@ -80,10 +53,6 @@ def listar_eleitores():
 
 
 def buscar_eleitor_por_titulo(titulo):
-    """
-    Busca um eleitor pelo número do título eleitoral.
-    Retorna o dicionário com os dados do eleitor ou None se não encontrado.
-    """
     conexao = conectar()
 
     if not conexao:
@@ -106,11 +75,6 @@ def buscar_eleitor_por_titulo(titulo):
 
 
 def buscar_eleitor_por_cpf(cpf):
-    """
-    Busca um eleitor pelo CPF.
-    O CPF informado é criptografado antes da consulta,
-    pois no banco ele também está criptografado.
-    """
     conexao = conectar()
 
     if not conexao:
@@ -135,33 +99,19 @@ def buscar_eleitor_por_cpf(cpf):
 
 
 def editar_eleitor(titulo_atual, novo_nome, novo_cpf, novo_titulo, cpf_foi_alterado):
-    """
-    Atualiza os dados de um eleitor existente.
-
-    PARÂMETRO NOVO: cpf_foi_alterado (True ou False)
-    - Se True:  o novo_cpf é um CPF limpo (vindo do usuário) → criptografar antes de salvar.
-    - Se False: o novo_cpf já está criptografado (veio do banco sem alteração) → salvar direto.
-
-    Isso evita o bug de criptografar o CPF duas vezes.
-    """
     conexao = conectar()
 
     if not conexao:
         return False
 
     try:
-        # Só criptografa se o CPF foi de fato alterado pelo usuário
         if cpf_foi_alterado:
             cpf_para_salvar = criptografar_cpf(novo_cpf)
         else:
-            cpf_para_salvar = novo_cpf  # Já está criptografado, usa como está
+            cpf_para_salvar = novo_cpf
 
         cursor = conexao.cursor()
-        sql = """
-            UPDATE eleitores
-            SET nome = %s, cpf = %s, titulo_eleitor = %s
-            WHERE titulo_eleitor = %s
-        """
+        sql = "UPDATE eleitores SET nome = %s, cpf = %s, titulo_eleitor = %s WHERE titulo_eleitor = %s"
         cursor.execute(sql, (novo_nome, cpf_para_salvar, novo_titulo, titulo_atual))
         conexao.commit()
 
@@ -179,10 +129,6 @@ def editar_eleitor(titulo_atual, novo_nome, novo_cpf, novo_titulo, cpf_foi_alter
 
 
 def remover_eleitor(titulo):
-    """
-    Remove um eleitor do banco pelo título eleitoral.
-    Retorna True se removido com sucesso, False caso contrário.
-    """
     conexao = conectar()
 
     if not conexao:
@@ -207,15 +153,6 @@ def remover_eleitor(titulo):
 
 
 def autenticar_eleitor(titulo, primeiros_digitos, chave_acesso):
-    """
-    Autentica um eleitor verificando três informações:
-      1. Título eleitoral (busca no banco)
-      2. 4 primeiros dígitos do CPF (descriptografa o CPF salvo para comparar)
-      3. Chave de acesso (criptografa a fornecida e compara com a salva)
-
-    Retorna o dicionário do eleitor se autenticado, ou None se falhar.
-    """
-    # Validação básica: os 4 dígitos devem ser numéricos
     if not primeiros_digitos.isdigit() or len(primeiros_digitos) != 4:
         print("Os 4 primeiros digitos do CPF devem ser numericos.")
         return None
@@ -227,29 +164,22 @@ def autenticar_eleitor(titulo, primeiros_digitos, chave_acesso):
 
     try:
         cursor = conexao.cursor(dictionary=True)
-
-        # Busca o eleitor pelo título
         cursor.execute("SELECT * FROM eleitores WHERE titulo_eleitor = %s", (titulo,))
         eleitor = cursor.fetchone()
 
         if not eleitor:
             return None
 
-        # ── Verificação 1: 4 primeiros dígitos do CPF ──
-        # O CPF está criptografado no banco, então descriptografamos para comparar
         cpf_descriptografado = descriptografar_cpf(eleitor["cpf"])
 
         if cpf_descriptografado[:4] != primeiros_digitos:
             return None
 
-        # ── Verificação 2: Chave de acesso ──
-        # Criptografamos a chave fornecida e comparamos com a que está no banco
         chave_criptografada = criptografar_chave(chave_acesso)
 
         if chave_criptografada != eleitor["chave_acesso"]:
             return None
 
-        # Autenticação bem-sucedida
         return eleitor
 
     except Exception as erro:
@@ -260,14 +190,7 @@ def autenticar_eleitor(titulo, primeiros_digitos, chave_acesso):
         conexao.close()
 
 
-
-
 def marcar_como_votou(eleitor_id):
-    """
-    Marca o eleitor como 'ja_votou = TRUE' no banco.
-    Chamado imediatamente após a confirmação do voto.
-    Retorna True se atualizado com sucesso, False caso contrário.
-    """
     conexao = conectar()
 
     if not conexao:
@@ -275,10 +198,7 @@ def marcar_como_votou(eleitor_id):
 
     try:
         cursor = conexao.cursor()
-        cursor.execute(
-            "UPDATE eleitores SET ja_votou = TRUE WHERE id = %s",
-            (eleitor_id,)
-        )
+        cursor.execute("UPDATE eleitores SET ja_votou = TRUE WHERE id = %s", (eleitor_id,))
         conexao.commit()
 
         if cursor.rowcount > 0:

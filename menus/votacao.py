@@ -1,59 +1,214 @@
-from menus.submenu.sistemavotacao import submenu_votacao
-from menus.submenu.resultados import resultados
-from menus.submenu.auditoria import auditoria
+from db.conexao import conectar
+from services.criptografia import gerar_protocolo, criptografar_protocolo
 
-votacao_iniciada = False
-votacao_encerrada = False
 
-def menu_votacao():
-    global votacao_iniciada, votacao_encerrada
-    opcao = ""
+def zerar_votos():
+    conexao = conectar()
+
+    if not conexao:
+        return False, []
 
     try:
-        while opcao != "0":
-            print("\n=== VOTAÇÃO ===")
-            print("1 - Abrir votação")
-            print("2 - Resultados")
-            print("3 - Auditoria")
-            print("4 - Encerrar votação")
-            print("0 - Voltar")
+        cursor = conexao.cursor()
+        cursor.execute("DELETE FROM votos")
+        conexao.commit()
 
-            opcao = input("Escolha: ")
+        cursor.execute("SELECT nome, numero, partido FROM candidatos ORDER BY nome")
 
-            if opcao == "0":
-                print("Voltando ao menu principal...")
-                return
+        colunas = ["nome", "numero", "partido"]
+        linhas = cursor.fetchall()
 
-            elif opcao == "1":
-                if votacao_encerrada:
-                    print("A votação deste turno já foi encerrada!")
-                else:
-                    print("Sistema de votação aberto!")
-                    votacao_iniciada = True
-                    submenu_votacao()
+        candidatos = []
+        for linha in linhas:
+            candidato = {}
+            for i in range(len(colunas)):
+                candidato[colunas[i]] = linha[i]
+            candidatos.append(candidato)
+
+        return True, candidatos
+
+    except Exception as erro:
+        print("Erro ao zerar votos:", erro)
+        return False, []
+
+    finally:
+        conexao.close()
 
 
-            elif opcao == "2":
-                if votacao_iniciada and not votacao_encerrada:
-                    print("Atenção: A votação está em andamento. Encerre-a para ver os resultados!")
-                elif not votacao_iniciada and not votacao_encerrada:
-                    print("A votação ainda não foi aberta hoje!")
-                else:
-                    resultados()
+def registrar_voto(eleitor_id, candidato_id, numero_candidato, tipo):
+    conexao = conectar()
 
-            elif opcao == "3":
-                auditoria()
-            
-            elif opcao == "4":
-                if not votacao_iniciada:
-                    print("Não é possível encerrar uma votação que não foi aberta!")
-                else:
-                    votacao_encerrada = True
-                    votacao_iniciada = False
-                    print("VOTAÇÃO ENCERRADA! Resultados liberados na Opção 2.")
+    if not conexao:
+        return None
 
-            else:
-                print("Opção Inválida!")
+    try:
+        cursor = conexao.cursor()
+        cursor.execute("SELECT ja_votou FROM eleitores WHERE id = %s", (eleitor_id,))
+        resultado = cursor.fetchone()
 
-    except:
-        print("Opção Inválida!")
+        if not resultado:
+            print("Eleitor nao encontrado no banco.")
+            return None
+
+        if resultado[0]:
+            print("Eleitor ja votou! Voto nao registrado.")
+            return None
+
+        protocolo_original = gerar_protocolo(numero_candidato)
+        protocolo_criptografado = criptografar_protocolo(protocolo_original)
+
+        cursor.execute(
+            "INSERT INTO votos (eleitor_id, candidato_id, tipo, protocolo) VALUES (%s, %s, %s, %s)",
+            (eleitor_id, candidato_id, tipo, protocolo_criptografado)
+        )
+
+        cursor.execute(
+            "UPDATE eleitores SET ja_votou = TRUE WHERE id = %s",
+            (eleitor_id,)
+        )
+
+        conexao.commit()
+
+        return protocolo_original
+
+    except Exception as erro:
+        conexao.rollback()
+        print("Erro ao registrar voto:", erro)
+        return None
+
+    finally:
+        conexao.close()
+
+
+def buscar_resultado():
+    conexao = conectar()
+
+    if not conexao:
+        return []
+
+    try:
+        cursor = conexao.cursor(dictionary=True)
+        sql = """
+            SELECT c.nome, c.numero, c.partido, COUNT(v.id) AS total_votos
+            FROM candidatos c
+            LEFT JOIN votos v ON v.candidato_id = c.id AND v.tipo = 'VALIDO'
+            GROUP BY c.id, c.nome, c.numero, c.partido
+            ORDER BY c.nome
+        """
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    except Exception as erro:
+        print("Erro ao buscar resultado:", erro)
+        return []
+
+    finally:
+        conexao.close()
+
+
+def buscar_votos_nulos():
+    conexao = conectar()
+
+    if not conexao:
+        return 0
+
+    try:
+        cursor = conexao.cursor()
+        cursor.execute("SELECT COUNT(*) FROM votos WHERE tipo = 'NULO'")
+        return cursor.fetchone()[0]
+
+    except Exception as erro:
+        print("Erro ao contar votos nulos:", erro)
+        return 0
+
+    finally:
+        conexao.close()
+
+
+def buscar_estatisticas():
+    conexao = conectar()
+
+    if not conexao:
+        return 0, 0
+
+    try:
+        cursor_votaram = conexao.cursor()
+        cursor_votaram.execute("SELECT COUNT(*) FROM eleitores WHERE ja_votou = TRUE")
+        votaram = cursor_votaram.fetchone()[0]
+
+        cursor_total = conexao.cursor()
+        cursor_total.execute("SELECT COUNT(*) FROM eleitores")
+        total = cursor_total.fetchone()[0]
+
+        return votaram, total
+
+    except Exception as erro:
+        print("Erro ao buscar estatisticas:", erro)
+        return 0, 0
+
+    finally:
+        conexao.close()
+
+
+def buscar_votos_por_partido():
+    conexao = conectar()
+
+    if not conexao:
+        return []
+
+    try:
+        cursor = conexao.cursor(dictionary=True)
+        sql = """
+            SELECT c.partido, COUNT(v.id) AS total_votos
+            FROM candidatos c
+            LEFT JOIN votos v ON v.candidato_id = c.id AND v.tipo = 'VALIDO'
+            GROUP BY c.partido
+            ORDER BY total_votos DESC
+        """
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    except Exception as erro:
+        print("Erro ao buscar votos por partido:", erro)
+        return []
+
+    finally:
+        conexao.close()
+
+
+def buscar_total_votos_urna():
+    conexao = conectar()
+
+    if not conexao:
+        return 0
+
+    try:
+        cursor = conexao.cursor()
+        cursor.execute("SELECT COUNT(*) FROM votos")
+        return cursor.fetchone()[0]
+
+    except Exception as erro:
+        print("Erro ao buscar total de votos:", erro)
+        return 0
+
+    finally:
+        conexao.close()
+
+
+def listar_protocolos():
+    conexao = conectar()
+
+    if not conexao:
+        return []
+
+    try:
+        cursor = conexao.cursor(dictionary=True)
+        cursor.execute("SELECT protocolo, data_voto FROM votos ORDER BY protocolo")
+        return cursor.fetchall()
+
+    except Exception as erro:
+        print("Erro ao listar protocolos:", erro)
+        return []
+
+    finally:
+        conexao.close()
