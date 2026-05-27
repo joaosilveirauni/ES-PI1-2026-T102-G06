@@ -1,4 +1,4 @@
-from services.eleitor import listar_resultado_votacao, buscar_votos_brancos_e_nulos
+from services.eleitor import listar_resultado_votacao, buscar_votos_brancos_e_nulos, calcular_estatisticas_comparecimento
 
 def resultados():
     opcao = ""
@@ -39,8 +39,27 @@ def resultados():
                 print(f"Votos Nulos: {votos_especiais['nulos']}")
                 print("="*30)
 
-            elif opcao == "2":
-                print("\n[Aviso] Estatísticas de Comparecimento (Funcionalidade em desenvolvimento pelo grupo).")
+           elif opcao == "2":
+                print("\n" + "="*30)
+                print("     ESTATÍSTICA DE COMPARECIMENTO")
+                print("="*30)
+                
+                dados = calcular_estatisticas_comparecimento()
+                
+                if dados is None or dados["total_eleitores"] == 0:
+                    print("\n[!] Nenhum eleitor cadastrado no sistema para gerar estatísticas.")
+                else:
+                    total = dados["total_eleitores"]
+                    compareceram = dados["total_votantes"]
+                    faltaram = total - compareceram
+                    
+                    pct_comparecimento = (compareceram / total) * 100
+                    pct_abstencao = (faltaram / total) * 100
+                    
+                    print(f"Total de Eleitores Aptos: {total}")
+                    print(f"Total de Comparecimento:  {compareceram} ({pct_comparecimento:.2f}%)")
+                    print(f"Total de Abstenção (Faltas): {faltaram} ({pct_abstencao:.2f}%)")
+                    print("="*30)
 
             elif opcao == "3":
                 print("\n[Aviso] Votos por Partido (Funcionalidade em desenvolvimento pelo grupo).")
