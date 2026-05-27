@@ -292,3 +292,30 @@ def marcar_como_votou(eleitor_id):
 
     finally:
         conexao.close()
+
+
+def listar_votos_por_partido():
+   
+    conexao = conectar()
+    if not conexao:
+        return []
+
+    try:
+        cursor = conexao.cursor(dictionary=True)
+        # O SQL une a tabela de candidatos e votos para somar por partido
+        sql = """
+            SELECT c.partido, COUNT(v.id) as total_votos
+            FROM candidatos c
+            INNER JOIN votos v ON c.numero = v.numero_candidato
+            GROUP BY c.partido
+            ORDER BY total_votos DESC
+        """
+        cursor.execute(sql)
+        return cursor.fetchall()
+        
+    except Exception as erro:
+        print("Erro ao buscar votos por partido:", erro)
+        return []
+        
+    finally:
+        conexao.close()
