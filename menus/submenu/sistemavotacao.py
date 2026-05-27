@@ -1,6 +1,6 @@
 from services.eleitor import autenticar_eleitor
 from services.candidato import buscar_candidato_por_numero
-from services.votacao import zerar_votos, registrar_voto
+from menus.votacao import zerar_votos, registrar_voto
 from services.criptografia import criptografar_chave
 from services.logs import log_abertura, log_acesso_negado, log_voto_duplo, log_voto_sucesso, log_encerramento
 
