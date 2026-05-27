@@ -1,8 +1,10 @@
 
 from services.criptografia import (
     criptografar_cpf,
-    descriptografa_cpf,    
-    criptografar_chave
+    descriptografa_cpf   
+    from services.criptografia import (
+    criptografar_cpf,
+    descriptografar_cpf
 )
 
 
@@ -27,7 +29,7 @@ def cadastrar_eleitor(nome, cpf, titulo, is_mesario):
         chave_original = gerar_chave_acesso(nome)
 
         # Criptografa a chave antes de salvar no banco
-        chave_criptografada = criptografar_chave(chave_original)
+        chave_criptografada = chave_original
 
         cursor = conexao.cursor()
         sql = """
