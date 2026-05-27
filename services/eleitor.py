@@ -319,3 +319,32 @@ def listar_votos_por_partido():
         
     finally:
         conexao.close()
+
+
+def verificar_integridade():
+    
+    conexao = conectar()
+    resultado = {"total_eleitores": 0, "total_votos": 0}
+    
+    if not conexao:
+        return resultado
+
+    try:
+        cursor = conexao.cursor(dictionary=True)
+
+        # 1. Conta eleitores que possuem o status "Já Votou" (ja_votou = TRUE / 1)
+        cursor.execute("SELECT COUNT(*) as qtd FROM eleitores WHERE ja_votou = 1")
+        resultado["total_eleitores"] = cursor.fetchone()["qtd"]
+
+        # 2. Conta o total de votos físicos registrados na urna
+        cursor.execute("SELECT COUNT(*) as qtd FROM votos")
+        resultado["total_votos"] = cursor.fetchone()["qtd"]
+
+        return resultado
+        
+    except Exception as erro:
+        print("Erro na validação de integridade:", erro)
+        return resultado
+        
+    finally:
+        conexao.close()
