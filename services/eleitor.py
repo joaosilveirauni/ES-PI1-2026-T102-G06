@@ -1,7 +1,7 @@
 from db.conexao import conectar
 from services.criptografia import (
     criptografar_cpf,
-    descriptografa_cpf,
+    descriptografar_cpf,
     gerar_chave_acesso,
     criptografar_chave
 )
