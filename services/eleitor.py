@@ -1,8 +1,4 @@
-
 from services.criptografia import (
-    criptografar_cpf,
-    descriptografa_cpf   
-    from services.criptografia import (
     criptografar_cpf,
     descriptografar_cpf
 )
