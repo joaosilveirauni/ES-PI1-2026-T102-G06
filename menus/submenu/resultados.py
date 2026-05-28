@@ -106,8 +106,8 @@ def resultados():
                     print("\n[X] STATUS: DIVERGENCIA ENCONTRADA")
                     print("Os numeros nao conferem. E necessaria auditoria.")
                 print("="*30)
-
-            else:
+                
+                else:
                 print("Opcao Invalida!")
 
     except Exception as e:
