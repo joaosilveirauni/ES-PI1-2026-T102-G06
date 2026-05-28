@@ -1,5 +1,5 @@
 from menus.gerenciamento import menu_gerenciamento
-from menus.votacao import menu_votacao
+from menus.submenu.sistemavotacao import menu_votacao
 
 def menu_principal():
     opcao = ""
