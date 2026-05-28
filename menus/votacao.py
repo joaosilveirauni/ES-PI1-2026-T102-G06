@@ -1,5 +1,6 @@
 from db.conexao import conectar
 from services.criptografia import gerar_protocolo, criptografar_protocolo
+from services.auditoria import registrar_ocorrencia
 
 
 def zerar_votos():
@@ -25,6 +26,8 @@ def zerar_votos():
                 candidato[colunas[i]] = linha[i]
             candidatos.append(candidato)
 
+        registrar_ocorrencia("Zeramento: Todos os votos foram removidos da urna.")
+
         return True, candidatos
 
     except Exception as erro:
@@ -48,10 +51,12 @@ def registrar_voto(eleitor_id, candidato_id, numero_candidato, tipo):
 
         if not resultado:
             print("Eleitor nao encontrado no banco.")
+            registrar_ocorrencia(f"Aviso: Tentativa de voto com eleitor ({eleitor_id}) não encontrado.")
             return None
 
         if resultado[0]:
             print("Eleitor ja votou! Voto nao registrado.")
+            registrar_ocorrencia(f"Aviso: Eleitor ({eleitor_id}) tentou votar mais de uma vez.")
             return None
 
         protocolo_original = gerar_protocolo(numero_candidato)
@@ -68,6 +73,8 @@ def registrar_voto(eleitor_id, candidato_id, numero_candidato, tipo):
         )
 
         conexao.commit()
+
+        registrar_ocorrencia(f"Voto: Eleitor ({eleitor_id}) votou no candidato ({candidato_id}) (tipo: {tipo}).")
 
         return protocolo_original
 
