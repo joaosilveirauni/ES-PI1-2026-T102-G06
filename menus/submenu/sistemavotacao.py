@@ -2,8 +2,7 @@ from services.eleitor import autenticar_eleitor
 from services.candidato import buscar_candidato_por_numero
 from menus.votacao import zerar_votos, registrar_voto
 from services.criptografia import criptografar_chave
-from services.logs import log_abertura, log_acesso_negado, log_voto_duplo, log_voto_sucesso, log_encerramento
-
+from services.auditoria import registrar_ocorrencia
 
 def pedir_credenciais():
     titulo = input("Titulo de Eleitor: ")
@@ -17,12 +16,12 @@ def autenticar_mesario():
     eleitor = autenticar_eleitor(titulo, primeiros_digitos, chave)
 
     if not eleitor:
-        log_acesso_negado("Dados invalidos na autenticacao do mesario")
+        registrar_ocorrencia("Acesso negado: Dados invalidos na autenticacao do mesario.")
         print("Dados invalidos! Acesso negado.")
         return None
 
     if not eleitor["is_mesario"]:
-        log_acesso_negado("Eleitor sem perfil de mesario tentou abrir/encerrar votacao")
+        registrar_ocorrencia("Acesso negado: Eleitor sem perfil de mesario tentou abrir/encerrar votacao.")
         print("Este eleitor nao possui perfil de mesario!")
         return None
 
@@ -54,7 +53,7 @@ def menu_votacao():
     print("-" * 50)
     print("Urna vazia confirmada. Votacao iniciada.")
 
-    log_abertura()
+    registrar_ocorrencia(f"Abertura: Votacao iniciada pelo mesario {mesario['nome']}.")
 
     menu_urna()
 
@@ -86,12 +85,12 @@ def fluxo_votacao():
     eleitor = autenticar_eleitor(titulo, primeiros_digitos, chave)
 
     if not eleitor:
-        log_acesso_negado("Dados invalidos na identificacao do eleitor")
+        registrar_ocorrencia("Acesso negado: Dados invalidos na identificacao do eleitor.")
         print("Dados invalidos! Acesso negado.")
         return
 
     if eleitor["ja_votou"]:
-        log_voto_duplo(titulo)
+        registrar_ocorrencia(f"Aviso: Eleitor com titulo {titulo} tentou votar mais de uma vez.")
         print("Este eleitor ja realizou seu voto!")
         return
 
@@ -146,7 +145,6 @@ def _confirmar_voto(eleitor_id, candidato_id, numero_candidato, tipo):
     protocolo = registrar_voto(eleitor_id, candidato_id, numero_candidato, tipo)
 
     if protocolo:
-        log_voto_sucesso()
         if tipo == "NULO":
             print("\nVoto NULO registrado com sucesso!")
         else:
@@ -181,6 +179,6 @@ def fluxo_encerramento():
         print("Chave invalida! Encerramento cancelado.")
         return False
 
-    log_encerramento()
+    registrar_ocorrencia(f"Encerramento: Votacao encerrada pelo mesario {mesario['nome']}.")
     print("\nVotacao encerrada com sucesso!")
     return True
