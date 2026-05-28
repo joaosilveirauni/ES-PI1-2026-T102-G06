@@ -3,7 +3,7 @@ from services.auditoria import listar_ocorrencias
 def auditoria():
     while True:
         print("\n=== AUDITORIA DA VOTAÇÃO ===")
-        print("1 - Exibir Logs de Ocorrência")
+        print("1 - Exibir Ocorrências")
         print("0 - Voltar")
         opcao = input("Escolha: ").strip()
 
@@ -23,4 +23,4 @@ def auditoria():
             return
 
         else:
-            print("Opção inválida! Digite 0 ou 1.")
+            print("Opção Inválida!")
