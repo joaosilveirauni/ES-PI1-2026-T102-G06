@@ -29,5 +29,12 @@ data_voto timestamp default current_timestamp,
 foreign key (candidato_id) references candidatos(id)
 );
 
+CREATE TABLE auditoria (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    mensagem VARCHAR(255) NOT NULL,
+    data_hora DATETIME DEFAULT NOW()
+);
+
+
 INSERT INTO candidatos (nome, numero, partido) VALUES ('Candidato A', 11, 'Partido 1');
 INSERT INTO candidatos (nome, numero, partido) VALUES ('Candidato B', 22, 'Partido 2');

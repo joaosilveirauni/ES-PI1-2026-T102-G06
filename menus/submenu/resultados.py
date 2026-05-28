@@ -1,4 +1,4 @@
-from services.votacao import (
+from menus.votacao import (
     buscar_resultado,
     buscar_votos_nulos,
     buscar_estatisticas,
