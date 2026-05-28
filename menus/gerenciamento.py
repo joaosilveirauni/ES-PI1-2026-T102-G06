@@ -1,6 +1,8 @@
 from services.eleitor import listar_eleitores, cadastrar_eleitor, buscar_eleitor_por_titulo, buscar_eleitor_por_cpf, editar_eleitor, remover_eleitor
 from services.candidato import listar_candidatos, cadastrar_candidato, buscar_candidato_por_numero, editar_candidato, remover_candidato
 from services.validacoes import pedir_cpf, pedir_titulo
+from services.auditoria import registrar_ocorrencia
+from menus.submenu.auditoria import auditoria
 
 def menu_gerenciamento():
     opcao = ""
@@ -10,6 +12,7 @@ def menu_gerenciamento():
             print("\n GERENCIAMENTO ")
             print("1 - Gerenciar Eleitores")
             print("2 - Gerenciar Candidatos")
+            print("3 - Ver Auditoria")
             print("0 - Voltar")
 
             opcao = input("Escolha: ")
@@ -18,6 +21,8 @@ def menu_gerenciamento():
                 menu_eleitores()
             elif opcao == "2":
                 menu_candidatos()
+            elif opcao == "3":
+                auditoria()
             elif opcao == "0":
                 return
             else:
@@ -82,6 +87,7 @@ def cadastrar():
         print("CHAVE DE ACESSO:", chave)
         print("========================================")
         print("Anote esta chave! Ela nao podera ser recuperada.")
+        registrar_ocorrencia(f"Cadastro: Eleitor {nome} (Titulo: {titulo}) foi registrado.")
     else:
         print("Erro ao cadastrar. Verifique se o CPF ou titulo ja existe.")
 
@@ -115,8 +121,10 @@ def buscar_titulo():
 
     if eleitor:
         exibir_eleitor(eleitor)
+        registrar_ocorrencia(f"Consulta: Dados do eleitor {eleitor['nome']} foram visualizados.")
     else:
         print("Eleitor nao encontrado.")
+        registrar_ocorrencia(f"Aviso: Tentativa de busca para o titulo {titulo_busca} falhou.")
 
 
 def buscar_cpf():
@@ -126,22 +134,23 @@ def buscar_cpf():
 
     if eleitor:
         exibir_eleitor(eleitor)
+        registrar_ocorrencia(f"Consulta: Dados do eleitor {eleitor['nome']} foram visualizados via CPF.")
     else:
         print("Eleitor nao encontrado.")
+        registrar_ocorrencia(f"Aviso: Tentativa de busca por CPF falhou.")
 
 
 def exibir_eleitor(eleitor):
     print("\nEleitor encontrado:")
-    print("Nome:    ", eleitor["nome"])
-    print("CPF:     ", eleitor["cpf"])
-    print("Titulo:  ", eleitor["titulo_eleitor"])
+    print("Nome:    ", eleitor.get("nome", ""))
+    print("Titulo:  ", eleitor.get("titulo_eleitor", ""))
 
-    if eleitor["is_mesario"]:
+    if eleitor.get("is_mesario"):
         print("Mesario:  Sim")
     else:
         print("Mesario:  Nao")
 
-    if eleitor["ja_votou"]:
+    if eleitor.get("ja_votou"):
         print("Ja votou: Sim")
     else:
         print("Ja votou: Nao")
@@ -164,11 +173,13 @@ def editar():
     if novo_nome == "":
         novo_nome = eleitor["nome"]
 
-    novo_cpf = input("Novo CPF [" + eleitor["cpf"] + "]: ")
-    if novo_cpf == "":
-        novo_cpf = eleitor["cpf"]
+    novo_cpf_input = input("Novo CPF (Enter para manter): ")
+    if novo_cpf_input == "":
+        novo_cpf = ""
+        cpf_foi_alterado = False
     else:
         novo_cpf = pedir_cpf()
+        cpf_foi_alterado = True
 
     novo_titulo = input("Novo Titulo [" + eleitor["titulo_eleitor"] + "]: ")
     if novo_titulo == "":
@@ -176,7 +187,7 @@ def editar():
     else:
         novo_titulo = pedir_titulo()
 
-    sucesso = editar_eleitor(titulo_busca, novo_nome, novo_cpf, novo_titulo)
+    sucesso = editar_eleitor(titulo_busca, novo_nome, novo_cpf, novo_titulo, cpf_foi_alterado)
 
     if sucesso:
         print("Eleitor editado com sucesso!")
