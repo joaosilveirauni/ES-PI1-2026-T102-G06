@@ -2,6 +2,15 @@ from db.conexao import conectar
 
 
 def listar_candidatos():
+    """
+    Executa a rotina listar_candidatos.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        list: Resultado da funcao.
+    """
     conexao = conectar()
 
     if not conexao:
@@ -21,6 +30,17 @@ def listar_candidatos():
 
 
 def cadastrar_candidato(nome, numero, partido):
+    """
+    Executa a rotina cadastrar_candidato.
+    
+    Args:
+        nome (str): Valor usado pela funcao.
+        numero (int): Valor usado pela funcao.
+        partido (str): Valor usado pela funcao.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     conexao = conectar()
 
     if not conexao:
@@ -41,6 +61,15 @@ def cadastrar_candidato(nome, numero, partido):
 
 
 def buscar_candidato_por_numero(numero):
+    """
+    Executa a rotina buscar_candidato_por_numero.
+    
+    Args:
+        numero (int): Valor usado pela funcao.
+    
+    Returns:
+        dict | None: Resultado da funcao.
+    """
     conexao = conectar()
 
     if not conexao:
@@ -60,6 +89,18 @@ def buscar_candidato_por_numero(numero):
 
 
 def editar_candidato(numero_atual, novo_nome, novo_numero, novo_partido):
+    """
+    Executa a rotina editar_candidato.
+    
+    Args:
+        numero_atual (int): Valor usado pela funcao.
+        novo_nome (str): Valor usado pela funcao.
+        novo_numero (int): Valor usado pela funcao.
+        novo_partido (str): Valor usado pela funcao.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     conexao = conectar()
 
     if not conexao:
@@ -85,6 +126,15 @@ def editar_candidato(numero_atual, novo_nome, novo_numero, novo_partido):
 
 
 def remover_candidato(numero):
+    """
+    Executa a rotina remover_candidato.
+    
+    Args:
+        numero (int): Valor usado pela funcao.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     conexao = conectar()
 
     if not conexao:

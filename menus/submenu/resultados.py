@@ -8,6 +8,15 @@ from menus.votacao import (
 
 
 def resultados():
+    """
+    Exibe os relatorios de resultado da votacao.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     opcao = ""
 
     try:
@@ -54,6 +63,8 @@ def resultados():
                     print("Partido: ", vencedor["partido"])
                     print("Votos:   ", vencedor["total_votos"])
                     print("="*30)
+                else:
+                    print("\nNao houve votos validos para declarar vencedor.")
 
             elif opcao == "2":
                 print("\n" + "="*30)
@@ -106,9 +117,6 @@ def resultados():
                     print("\n[X] STATUS: DIVERGENCIA ENCONTRADA")
                     print("Os numeros nao conferem. E necessaria auditoria.")
                 print("="*30)
-
-            else:
-                print("Opcao Invalida!")
-
+                
     except Exception as e:
         print("Erro no sistema de resultados:", e)

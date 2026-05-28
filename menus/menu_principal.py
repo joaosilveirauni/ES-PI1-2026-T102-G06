@@ -1,14 +1,23 @@
 from menus.gerenciamento import menu_gerenciamento
-from menus.submenu.sistemavotacao import menu_votacao
+from menus.votacao import menu_votacao
 
 def menu_principal():
+    """
+    Exibe o menu principal do sistema.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     opcao = ""
 
     while opcao != "0":
         try:
             print("\n=== MENU PRINCIPAL ===")
-            print("1 - Votar")
-            print("2 - Gerenciar")
+            print("1 - Votacao")
+            print("2 - Gerenciamento")
             print("0 - Sair")
 
             opcao = input("Escolha: ")

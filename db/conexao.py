@@ -1,6 +1,15 @@
 import mysql.connector
 
 def conectar():
+    """
+    Executa a rotina conectar.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     try:
         conexao = mysql.connector.connect(
             host="localhost",
