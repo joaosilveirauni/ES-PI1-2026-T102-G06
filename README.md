@@ -12,7 +12,7 @@ O sistema foi projetado para assegurar a identificação rigorosa dos participan
 - Luiz Gustavo Urias Vieira (26005065)   
 - Matheus Alves Kusuki de Almeida (26007007)   
 - Matheus Milanez da Silva ()    
-- Murilo Henrique de Oliveira Joaquim ()    
+- Murilo Henrique de Oliveira Joaquim (26011052)    
 
 ## Tecnologias e Ferramentas Utilizadas    
 - **VSCode:** Ambiente de Desenvolvimento utilizada para desenvolver todo o código do projeto.    
