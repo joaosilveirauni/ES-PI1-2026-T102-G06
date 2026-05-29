@@ -1,4 +1,13 @@
 def validar_cpf(cpf):
+    """
+    Executa a rotina validar_cpf.
+    
+    Args:
+        cpf (str): Valor usado pela funcao.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     cpf = cpf.replace(".", "").replace("-", "")
  
     if len(cpf) != 11:
@@ -62,6 +71,15 @@ def validar_cpf(cpf):
  
  
 def pedir_cpf():
+    """
+    Executa a rotina pedir_cpf.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        str: Resultado da funcao.
+    """
     cpf = input("Digite o CPF: ")
     cpf = cpf.replace(".", "").replace("-", "")
  
@@ -73,6 +91,15 @@ def pedir_cpf():
     return cpf
  
 def validar_titulo(titulo):
+    """
+    Executa a rotina validar_titulo.
+    
+    Args:
+        titulo (str): Valor usado pela funcao.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     if len(titulo) != 12:
         return False
  
@@ -138,6 +165,15 @@ def validar_titulo(titulo):
  
  
 def pedir_titulo():
+    """
+    Executa a rotina pedir_titulo.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        str: Resultado da funcao.
+    """
     titulo = input("Digite o Título de Eleitor (12 dígitos): ")
  
     while not validar_titulo(titulo):

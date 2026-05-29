@@ -4,7 +4,17 @@ from menus.votacao import zerar_votos, registrar_voto
 from services.criptografia import criptografar_chave
 from services.auditoria import registrar_ocorrencia
 
+
 def pedir_credenciais():
+    """
+    Executa a rotina pedir_credenciais.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        tuple: Resultado da funcao.
+    """
     titulo = input("Titulo de Eleitor: ")
     primeiros_digitos = input("4 primeiros digitos do CPF: ")
     chave = input("Chave de Acesso: ")
@@ -12,25 +22,43 @@ def pedir_credenciais():
 
 
 def autenticar_mesario():
+    """
+    Executa a rotina autenticar_mesario.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        dict | None: Resultado da funcao.
+    """
     titulo, primeiros_digitos, chave = pedir_credenciais()
     eleitor = autenticar_eleitor(titulo, primeiros_digitos, chave)
 
     if not eleitor:
-        registrar_ocorrencia("Acesso negado: Dados invalidos na autenticacao do mesario.")
-        print("Dados invalidos! Acesso negado.")
+        registrar_ocorrencia("ALERTA: Tentativa de acesso negado")
+        print("Validacao falhou. Dados invalidos!")
         return None
 
     if not eleitor["is_mesario"]:
-        registrar_ocorrencia("Acesso negado: Eleitor sem perfil de mesario tentou abrir/encerrar votacao.")
-        print("Este eleitor nao possui perfil de mesario!")
+        registrar_ocorrencia("ALERTA: Tentativa de acesso negado")
+        print("Validacao falhou. Este eleitor nao possui perfil de mesario!")
         return None
 
     return eleitor
 
 
-def menu_votacao():
+def abrir_sistema_votacao():
+    """
+    Abre o sistema de votacao apos validar o mesario.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     print("\n========================================")
-    print("        MODULO DE VOTACAO              ")
+    print("        ABRIR SISTEMA DE VOTACAO        ")
     print("========================================")
     print("\nPara abrir a votacao, o mesario deve se identificar.")
 
@@ -49,19 +77,28 @@ def menu_votacao():
     print("\n ZERESIMA CONCLUIDA ")
     print("-" * 50)
     for c in candidatos:
-        print("Candidato:", c["nome"], "| Numero:", c["numero"], "| Votos: 0")
+        print("Candidato:", c["nome"], "| Numero:", c["numero"], "| Partido:", c["partido"], "| Votos: 0")
     print("-" * 50)
     print("Urna vazia confirmada. Votacao iniciada.")
 
-    registrar_ocorrencia(f"Abertura: Votacao iniciada pelo mesario {mesario['nome']}.")
+    registrar_ocorrencia("ABERTURA: Votação iniciada com sucesso. Total de votos zerado.")
 
     menu_urna()
 
 
 def menu_urna():
-    opcao = ""
+    """
+    Exibe o menu da urna durante a votacao.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
+    encerrado = False
 
-    while True:
+    while not encerrado:
         print("\n URNA ELETRONICA ")
         print("1 - Votar")
         print("2 - Encerrar Sistema de Votacao")
@@ -72,25 +109,32 @@ def menu_urna():
             fluxo_votacao()
         elif opcao == "2":
             encerrado = fluxo_encerramento()
-            if encerrado:
-                return
         else:
             print("Opcao invalida!")
 
 
 def fluxo_votacao():
+    """
+    Executa a rotina fluxo_votacao.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     print("\n IDENTIFICACAO DO ELEITOR ")
     titulo, primeiros_digitos, chave = pedir_credenciais()
 
     eleitor = autenticar_eleitor(titulo, primeiros_digitos, chave)
 
     if not eleitor:
-        registrar_ocorrencia("Acesso negado: Dados invalidos na identificacao do eleitor.")
+        registrar_ocorrencia("ALERTA: Tentativa de acesso negado")
         print("Dados invalidos! Acesso negado.")
         return
 
     if eleitor["ja_votou"]:
-        registrar_ocorrencia(f"Aviso: Eleitor com titulo {titulo} tentou votar mais de uma vez.")
+        registrar_ocorrencia("ALERTA: Tentativa de voto duplo")
         print("Este eleitor ja realizou seu voto!")
         return
 
@@ -98,50 +142,64 @@ def fluxo_votacao():
 
 
 def _coletar_voto(eleitor):
-    while True:
+    """
+    Executa a rotina _coletar_voto.
+    
+    Args:
+        eleitor (dict): Valor usado pela funcao.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
+    voto_confirmado = False
+
+    while not voto_confirmado:
         print("\n VOTACAO ")
-        numero = input("Digite o numero do candidato (ou 0 para voto nulo): ")
+        numero = input("Digite o numero do candidato: ")
 
         if not numero.isdigit():
             print("Numero invalido! Digite apenas numeros.")
-            continue
-
-        numero = int(numero)
-
-        if numero == 0:
-            confirmacao = input("Voto NULO. Confirmar? (s/n): ")
-            if confirmacao.lower() == "s":
-                _confirmar_voto(eleitor["id"], None, 0, "NULO")
-                return
-            else:
-                continue
-
-        candidato = buscar_candidato_por_numero(numero)
-
-        if not candidato:
-            print("\nNenhum candidato encontrado com este numero.")
-            confirmacao = input("Deseja confirmar mesmo assim? O voto sera registrado como NULO. (s/n): ")
-            if confirmacao.lower() == "s":
-                _confirmar_voto(eleitor["id"], None, numero, "NULO")
-                return
-            else:
-                continue
-
-        print("\nCandidato encontrado:")
-        print("Nome:    ", candidato["nome"])
-        print("Numero:  ", candidato["numero"])
-        print("Partido: ", candidato["partido"])
-
-        confirmacao = input("\nConfirmar voto neste candidato? (s/n): ")
-
-        if confirmacao.lower() == "s":
-            _confirmar_voto(eleitor["id"], candidato["id"], candidato["numero"], "VALIDO")
-            return
         else:
-            print("Voto nao confirmado. Tente novamente.")
+            numero = int(numero)
+            candidato = buscar_candidato_por_numero(numero)
+
+            if candidato:
+                print("\nCandidato encontrado:")
+                print("Nome:    ", candidato["nome"])
+                print("Numero:  ", candidato["numero"])
+                print("Partido: ", candidato["partido"])
+
+                confirmacao = input("\nConfirmar voto neste candidato? (s/n): ")
+
+                if confirmacao.lower() == "s":
+                    _confirmar_voto(eleitor["id"], candidato["id"], candidato["numero"], "VALIDO")
+                    voto_confirmado = True
+                else:
+                    print("Voto nao confirmado. Digite o numero novamente.")
+            else:
+                print("\nNenhum candidato encontrado com este numero.")
+                confirmacao = input("Deseja confirmar mesmo assim? O voto sera registrado como NULO. (s/n): ")
+
+                if confirmacao.lower() == "s":
+                    _confirmar_voto(eleitor["id"], None, numero, "NULO")
+                    voto_confirmado = True
+                else:
+                    print("Voto nao confirmado. Digite o numero novamente.")
 
 
 def _confirmar_voto(eleitor_id, candidato_id, numero_candidato, tipo):
+    """
+    Executa a rotina _confirmar_voto.
+    
+    Args:
+        eleitor_id (int): Valor usado pela funcao.
+        candidato_id (int): Valor usado pela funcao.
+        numero_candidato (int): Valor usado pela funcao.
+        tipo (str): Valor usado pela funcao.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     protocolo = registrar_voto(eleitor_id, candidato_id, numero_candidato, tipo)
 
     if protocolo:
@@ -158,6 +216,15 @@ def _confirmar_voto(eleitor_id, candidato_id, numero_candidato, tipo):
 
 
 def fluxo_encerramento():
+    """
+    Executa a rotina fluxo_encerramento.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     print("\n ENCERRAMENTO DA VOTACAO ")
     print("O mesario deve se identificar para encerrar.")
 
@@ -166,9 +233,9 @@ def fluxo_encerramento():
     if not mesario:
         return False
 
-    confirmacao = input("\nDeseja realmente encerrar a votacao? (s/n): ")
+    confirmacao = input("\nDeseja realmente encerrar a votação? (Sim/Não): ")
 
-    if confirmacao.lower() != "s":
+    if confirmacao.lower() not in ["sim", "s"]:
         print("Encerramento cancelado.")
         return False
 
@@ -176,9 +243,10 @@ def fluxo_encerramento():
     chave_confirmacao = input("Chave de Acesso: ")
 
     if criptografar_chave(chave_confirmacao) != mesario["chave_acesso"]:
+        registrar_ocorrencia("ALERTA: Tentativa de acesso negado")
         print("Chave invalida! Encerramento cancelado.")
         return False
 
-    registrar_ocorrencia(f"Encerramento: Votacao encerrada pelo mesario {mesario['nome']}.")
+    registrar_ocorrencia("ENCERRAMENTO: Votação finalizada com sucesso.")
     print("\nVotacao encerrada com sucesso!")
     return True

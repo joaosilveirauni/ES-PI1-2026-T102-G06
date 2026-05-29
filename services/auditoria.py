@@ -1,59 +1,68 @@
-from db.conexao import conectar
+from datetime import datetime
+
+
+LOG_PATH = "logs_ocorrencias.txt"
+
 
 def registrar_ocorrencia(mensagem):
-    conexao = conectar()
-
-    if not conexao:
-        print(f"\n[AUDITORIA - LOG]: {mensagem}")
-        return False
+    """
+    Executa a rotina registrar_ocorrencia.
+    
+    Args:
+        mensagem (str): Valor usado pela funcao.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
+    horario = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    linha = f"[{horario}] {mensagem}"
 
     try:
-        cursor = conexao.cursor()
-        sql = "INSERT INTO auditoria (mensagem, data_hora) VALUES (%s, NOW())"
-        cursor.execute(sql, (mensagem,))
-        conexao.commit()
+        with open(LOG_PATH, "a", encoding="utf-8") as arquivo:
+            arquivo.write(linha + "\n")
         return True
-
     except Exception as erro:
-        print(f"Falha ao registrar auditoria: {erro}")
+        print("Falha ao registrar log:", erro)
         return False
-
-    finally:
-        if conexao:
-            conexao.close()
 
 
 def listar_ocorrencias():
-    conexao = conectar()
-
-    if not conexao:
-        return []
-
+    """
+    Executa a rotina listar_ocorrencias.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        list: Resultado da funcao.
+    """
     try:
-        cursor = conexao.cursor(dictionary=True)
-        cursor.execute("SELECT mensagem, data_hora FROM auditoria ORDER BY data_hora DESC")
-        return cursor.fetchall()
-
-    except Exception as erro:
-        print(f"Erro ao ler auditoria: {erro}")
+        with open(LOG_PATH, "r", encoding="utf-8") as arquivo:
+            return arquivo.readlines()
+    except FileNotFoundError:
         return []
-
-    finally:
-        if conexao:
-            conexao.close()
+    except Exception as erro:
+        print("Erro ao ler logs:", erro)
+        return []
 
 
 def exibir_ocorrencias():
+    """
+    Executa a rotina exibir_ocorrencias.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     ocorrencias = listar_ocorrencias()
 
     if not ocorrencias:
         print("\nNenhuma ocorrencia encontrada.")
         return
 
-    print("\n===== LOG DE AUDITORIA =====")
+    print("\n===== LOGS DE OCORRENCIAS =====")
 
-    for i, item in enumerate(ocorrencias, start=1):
-        data = item.get("data_hora")
-        mensagem = item.get("mensagem")
-        print(f"\n[{i}] {data}")
-        print(f"Mensagem: {mensagem}")
+    for linha in ocorrencias:
+        print(linha.strip())

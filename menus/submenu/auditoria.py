@@ -1,26 +1,43 @@
-from services.auditoria import listar_ocorrencias
+from menus.votacao import listar_protocolos
+from services.auditoria import exibir_ocorrencias
+
 
 def auditoria():
-    while True:
-        print("\n=== AUDITORIA DA VOTAÇÃO ===")
-        print("1 - Exibir Ocorrências")
-        print("0 - Voltar")
-        opcao = input("Escolha: ").strip()
+    """
+    Exibe o menu de auditoria da votacao.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
+    opcao = ""
 
-        if opcao == "1":
-            try:
-                logs = listar_ocorrencias()
-                print("\n=== HISTÓRICO DE OCORRÊNCIAS ===")
-                if logs:
-                    for log in logs:
-                        print(f"[{log['data_hora']}] {log['mensagem']}")
+    try:
+        while opcao != "0":
+            print("\n=== AUDITORIA DA VOTACAO ===")
+            print("1 - Exibir Logs de Ocorrencias")
+            print("2 - Exibir Protocolos de Votacao")
+            print("0 - Voltar")
+
+            opcao = input("Escolha: ")
+
+            if opcao == "1":
+                exibir_ocorrencias()
+            elif opcao == "2":
+                protocolos = listar_protocolos()
+
+                print("\n=== PROTOCOLOS DE VOTACAO ===")
+
+                if not protocolos:
+                    print("Nenhum protocolo encontrado.")
                 else:
-                    print("Nenhum registro encontrado.")
-            except Exception as e:
-                print(f"Erro ao carregar logs: {e}")
-
-        elif opcao == "0":
-            return
-
-        else:
-            print("Opção Inválida!")
+                    for item in protocolos:
+                        print("Protocolo:", item["protocolo"], "| Data:", item["data_voto"])
+            elif opcao == "0":
+                return
+            else:
+                print("Opcao invalida!")
+    except Exception as erro:
+        print("Erro na auditoria:", erro)

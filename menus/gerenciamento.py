@@ -5,6 +5,15 @@ from services.auditoria import registrar_ocorrencia
 from menus.submenu.auditoria import auditoria
 
 def menu_gerenciamento():
+    """
+    Exibe o menu de gerenciamento.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     opcao = ""
 
     try:
@@ -31,6 +40,15 @@ def menu_gerenciamento():
         print("Opcao Invalida!")
 
 def menu_eleitores():
+    """
+    Exibe o menu de gerenciamento de eleitores.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     opcao = ""
 
     try:
@@ -67,6 +85,15 @@ def menu_eleitores():
 
 
 def cadastrar():
+    """
+    Executa a rotina cadastrar.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     print("\n CADASTRO DE ELEITOR ")
     nome = input("Nome completo: ")
     cpf = pedir_cpf()
@@ -93,6 +120,15 @@ def cadastrar():
 
 
 def listar():
+    """
+    Executa a rotina listar.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        list: Resultado da funcao.
+    """
     eleitores = listar_eleitores()
 
     print("\n LISTA DE ELEITORES ")
@@ -115,6 +151,15 @@ def listar():
 
 
 def buscar_titulo():
+    """
+    Executa a rotina buscar_titulo.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        list: Resultado da funcao.
+    """
     print("\n--- BUSCA POR TITULO ---")
     titulo_busca = input("Digite o Titulo de Eleitor: ")
     eleitor = buscar_eleitor_por_titulo(titulo_busca)
@@ -128,6 +173,15 @@ def buscar_titulo():
 
 
 def buscar_cpf():
+    """
+    Executa a rotina buscar_cpf.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        list: Resultado da funcao.
+    """
     print("\n BUSCA POR CPF ")
     cpf_busca = pedir_cpf()
     eleitor = buscar_eleitor_por_cpf(cpf_busca)
@@ -141,6 +195,15 @@ def buscar_cpf():
 
 
 def exibir_eleitor(eleitor):
+    """
+    Executa a rotina exibir_eleitor.
+    
+    Args:
+        eleitor (dict): Valor usado pela funcao.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     print("\nEleitor encontrado:")
     print("Nome:    ", eleitor.get("nome", ""))
     print("Titulo:  ", eleitor.get("titulo_eleitor", ""))
@@ -157,6 +220,15 @@ def exibir_eleitor(eleitor):
 
 
 def editar():
+    """
+    Executa a rotina editar.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     print("\n EDITAR ELEITOR ")
     titulo_busca = input("Digite o Titulo do eleitor que deseja editar: ")
     eleitor = buscar_eleitor_por_titulo(titulo_busca)
@@ -196,6 +268,15 @@ def editar():
 
 
 def remover():
+    """
+    Executa a rotina remover.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     print("\n REMOVER ELEITOR ")
     titulo_busca = input("Digite o Titulo do eleitor que deseja remover: ")
     eleitor = buscar_eleitor_por_titulo(titulo_busca)
@@ -219,9 +300,16 @@ def remover():
         print("Remocao cancelada.")
 
 
-# ── CANDIDATOS ────────────────────────────────────────────────────────────────
-
 def menu_candidatos():
+    """
+    Exibe o menu de gerenciamento de candidatos.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     opcao = ""
 
     try:
@@ -255,6 +343,15 @@ def menu_candidatos():
 
 
 def cadastrar_cand():
+    """
+    Executa a rotina cadastrar_cand.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     print("\n CADASTRO DE CANDIDATO ")
     nome = input("Nome do candidato: ")
     partido = input("Partido: ")
@@ -282,6 +379,15 @@ def cadastrar_cand():
 
 
 def listar_cand():
+    """
+    Executa a rotina listar_cand.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        list: Resultado da funcao.
+    """
     candidatos = listar_candidatos()
 
     print("\n LISTA DE CANDIDATOS ")
@@ -294,6 +400,15 @@ def listar_cand():
 
 
 def buscar_cand():
+    """
+    Executa a rotina buscar_cand.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        list: Resultado da funcao.
+    """
     print("\n BUSCA DE CANDIDATO ")
     numero = input("Digite o numero do candidato: ")
 
@@ -311,6 +426,15 @@ def buscar_cand():
 
 
 def exibir_candidato(candidato):
+    """
+    Executa a rotina exibir_candidato.
+    
+    Args:
+        candidato (dict): Valor usado pela funcao.
+    
+    Returns:
+        None: Resultado da funcao.
+    """
     print("\nCandidato encontrado:")
     print("Nome:    ", candidato["nome"])
     print("Numero:  ", candidato["numero"])
@@ -318,6 +442,15 @@ def exibir_candidato(candidato):
 
 
 def editar_cand():
+    """
+    Executa a rotina editar_cand.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     print("\n EDITAR CANDIDATO ")
     numero = input("Digite o numero do candidato que deseja editar: ")
 
@@ -369,6 +502,15 @@ def editar_cand():
 
 
 def remover_cand():
+    """
+    Executa a rotina remover_cand.
+    
+    Args:
+        Nenhum.
+    
+    Returns:
+        bool: Resultado da funcao.
+    """
     print("\n--- REMOVER CANDIDATO ---")
     numero = input("Digite o numero do candidato que deseja remover: ")
 
