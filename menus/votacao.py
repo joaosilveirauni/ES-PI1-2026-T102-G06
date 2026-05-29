@@ -6,7 +6,7 @@ from services.criptografia import (
     criptografar_protocolo
 )
 from services.auditoria import registrar_ocorrencia
-
+import os
 
 def menu_votacao():
     """
@@ -20,6 +20,7 @@ def menu_votacao():
     """
     opcao = ""
 
+    os.system('cls')
     try:
         while opcao != "0":
             print("\n=== MODULO DE VOTACAO ===")

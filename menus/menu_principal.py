@@ -1,5 +1,6 @@
 from menus.gerenciamento import menu_gerenciamento
 from menus.votacao import menu_votacao
+import os
 
 def menu_principal():
     """
@@ -12,7 +13,8 @@ def menu_principal():
         None: Resultado da funcao.
     """
     opcao = ""
-
+    
+    os.system('cls')
     while opcao != "0":
         try:
             print("\n=== MENU PRINCIPAL ===")

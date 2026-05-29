@@ -1,3 +1,4 @@
 [2026-05-28 00:35:22] ALERTA: Tentativa de acesso negado
 [2026-05-28 12:48:18] Consulta: Dados do eleitor João Souza foram visualizados.
 [2026-05-28 12:50:26] Consulta: Dados do eleitor João Souza foram visualizados via CPF.
+[2026-05-29 20:28:42] ALERTA: Tentativa de acesso negado

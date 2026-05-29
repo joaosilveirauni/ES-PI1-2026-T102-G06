@@ -3,6 +3,7 @@ from services.candidato import listar_candidatos, cadastrar_candidato, buscar_ca
 from services.validacoes import pedir_cpf, pedir_titulo
 from services.auditoria import registrar_ocorrencia
 from menus.submenu.auditoria import auditoria
+import os
 
 def menu_gerenciamento():
     """
@@ -17,6 +18,7 @@ def menu_gerenciamento():
     opcao = ""
 
     try:
+        os.system('cls')
         while opcao != "0":
             print("\n GERENCIAMENTO ")
             print("1 - Gerenciar Eleitores")
