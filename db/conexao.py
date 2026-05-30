@@ -12,10 +12,10 @@ def conectar():
     """
     try:
         conexao = mysql.connector.connect(
-            host="localhost",
-            user="root",
+            host="BD-ACD",
+            user="BD250226117",
             password="Jujyo9",
-            database="ladpy"
+            database="BD250226117"
         )
         return conexao
     except Exception as e:
