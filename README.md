@@ -11,7 +11,7 @@ O sistema foi projetado para assegurar a identificação rigorosa dos participan
 - João Pedro Silveira de Souza (26009261)   
 - Luiz Gustavo Urias Vieira (26005065)   
 - Matheus Alves Kusuki de Almeida (26007007)   
-- Matheus Milanez da Silva ()    
+- Matheus Milanez da Silva (26002584)    
 - Murilo Henrique de Oliveira Joaquim (26011052)    
 
 ## Tecnologias e Ferramentas Utilizadas    
