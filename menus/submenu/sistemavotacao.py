@@ -99,9 +99,9 @@ def menu_urna():
     encerrado = False
 
     while not encerrado:
-        print("\n URNA ELETRONICA ")
+        print("\n=== URNA ELETRONICA ===")
         print("1 - Votar")
-        print("2 - Encerrar Sistema de Votacao")
+        print("2 - Encerrar Votação")
 
         opcao = input("Escolha: ")
 
@@ -225,15 +225,15 @@ def fluxo_encerramento():
     Returns:
         bool: Resultado da funcao.
     """
-    print("\n ENCERRAMENTO DA VOTACAO ")
-    print("O mesario deve se identificar para encerrar.")
+    print("\n=== ENCERRAMENTO DA VOTACAO ===")
+    print("O mesário deve se identificar para encerrar.")
 
     mesario = autenticar_mesario()
 
     if not mesario:
         return False
 
-    confirmacao = input("\nDeseja realmente encerrar a votação? (Sim/Não): ")
+    confirmacao = input("\nDeseja realmente encerrar a votação? (S/N): ")
 
     if confirmacao.lower() not in ["sim", "s"]:
         print("Encerramento cancelado.")
