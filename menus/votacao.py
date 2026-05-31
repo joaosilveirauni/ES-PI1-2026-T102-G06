@@ -23,10 +23,10 @@ def menu_votacao():
     os.system('cls')
     try:
         while opcao != "0":
-            print("\n=== MODULO DE VOTACAO ===")
-            print("1 - Abrir Sistema de Votacao")
-            print("2 - Auditoria da Votacao")
-            print("3 - Resultados da Votacao")
+            print("\n=== MODULO DE VOTAÇÃO ===")
+            print("1 - Abrir Sistema de Votação")
+            print("2 - Auditoria da Votação")
+            print("3 - Resultados da Votação")
             print("0 - Voltar")
 
             opcao = input("Escolha: ")
