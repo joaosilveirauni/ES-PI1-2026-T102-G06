@@ -21,7 +21,7 @@ def resultados():
 
     try:
         while opcao != "0":
-            print("\n=== RELATORIOS E RESULTADOS DA VOTACAO ===")
+            print("\n=== RELATÓRIOS E RESULTADOS DA VOTAÇÃO ===")
             print("1 - Boletim de Urna")
             print("2 - Estatistica de Comparecimento")
             print("3 - Votos por Partido")
@@ -31,7 +31,7 @@ def resultados():
             opcao = input("Escolha: ")
 
             if opcao == "0":
-                print("Voltando ao menu de votacao...")
+                print("Voltando ao menu de votação...")
                 return
 
             elif opcao == "1":
@@ -52,7 +52,7 @@ def resultados():
                         if candidato["total_votos"] > vencedor["total_votos"]:
                             vencedor = candidato
 
-                print("\n--- VOTOS ESPECIAIS ---")
+                print("\n=== VOTOS ESPECIAIS ===")
                 print("Votos Nulos:", nulos)
                 print("="*30)
 
@@ -64,7 +64,7 @@ def resultados():
                     print("Votos:   ", vencedor["total_votos"])
                     print("="*30)
                 else:
-                    print("\nNao houve votos validos para declarar vencedor.")
+                    print("\nNão houve votos válidos para declarar vencedor.")
 
             elif opcao == "2":
                 print("\n" + "="*30)
@@ -115,7 +115,7 @@ def resultados():
                     print("O numero de votos condiz com o numero de eleitores.")
                 else:
                     print("\n[X] STATUS: DIVERGENCIA ENCONTRADA")
-                    print("Os numeros nao conferem. E necessaria auditoria.")
+                    print("Os numeros não conferem. É necessaria auditoria.")
                 print("="*30)
                 
     except Exception as e:
