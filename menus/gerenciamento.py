@@ -37,9 +37,9 @@ def menu_gerenciamento():
             elif opcao == "0":
                 return
             else:
-                print("Opcao invalida!")
+                print("Opção Inválida!")
     except:
-        print("Opcao Invalida!")
+        print("Opção Inválida!")
 
 def menu_eleitores():
     """
@@ -55,7 +55,7 @@ def menu_eleitores():
 
     try:
         while opcao != "0":
-            print("\n GERENCIAMENTO DE ELEITORES ")
+            print("\n=== GERENCIAMENTO DE ELEITORES ===")
             print("1 - Cadastrar Eleitor")
             print("2 - Listar Eleitores")
             print("3 - Buscar Eleitor por Titulo")
@@ -81,9 +81,9 @@ def menu_eleitores():
             elif opcao == "0":
                 return
             else:
-                print("Opcao invalida!")
+                print("Opção Inválida!")
     except:
-        print("Opcao Invalida!")
+        print("Opção Inválida!")
 
 
 def cadastrar():
@@ -96,12 +96,12 @@ def cadastrar():
     Returns:
         None: Resultado da funcao.
     """
-    print("\n CADASTRO DE ELEITOR ")
+    print("\n=== CADASTRO DE ELEITOR ===")
     nome = input("Nome completo: ")
     cpf = pedir_cpf()
     titulo = pedir_titulo()
 
-    resposta = input("Este eleitor e mesario? (s/n): ")
+    resposta = input("Este eleitor é mesário? (S/N): ")
 
     if resposta.lower() == "s":
         is_mesario = True
@@ -115,7 +115,7 @@ def cadastrar():
         print("========================================")
         print("CHAVE DE ACESSO:", chave)
         print("========================================")
-        print("Anote esta chave! Ela nao podera ser recuperada.")
+        print("Anote esta chave! Ela não poderá ser recuperada.")
         registrar_ocorrencia(f"Cadastro: Eleitor {nome} (Titulo: {titulo}) foi registrado.")
     else:
         print("Erro ao cadastrar. Verifique se o CPF ou titulo ja existe.")
@@ -133,7 +133,7 @@ def listar():
     """
     eleitores = listar_eleitores()
 
-    print("\n LISTA DE ELEITORES ")
+    print("\n=== LISTA DE ELEITORES ===")
 
     if not eleitores:
         print("Nenhum eleitor encontrado.")
@@ -162,7 +162,7 @@ def buscar_titulo():
     Returns:
         list: Resultado da funcao.
     """
-    print("\n--- BUSCA POR TITULO ---")
+    print("\n=== BUSCA POR TITULO ===")
     titulo_busca = input("Digite o Titulo de Eleitor: ")
     eleitor = buscar_eleitor_por_titulo(titulo_busca)
 
@@ -184,7 +184,7 @@ def buscar_cpf():
     Returns:
         list: Resultado da funcao.
     """
-    print("\n BUSCA POR CPF ")
+    print("\n=== BUSCA POR CPF ===")
     cpf_busca = pedir_cpf()
     eleitor = buscar_eleitor_por_cpf(cpf_busca)
 
@@ -206,7 +206,7 @@ def exibir_eleitor(eleitor):
     Returns:
         None: Resultado da funcao.
     """
-    print("\nEleitor encontrado:")
+    print("\n=== Eleitor encontrado: ===")
     print("Nome:    ", eleitor.get("nome", ""))
     print("Titulo:  ", eleitor.get("titulo_eleitor", ""))
 
@@ -236,12 +236,12 @@ def editar():
     eleitor = buscar_eleitor_por_titulo(titulo_busca)
 
     if not eleitor:
-        print("Eleitor nao encontrado.")
+        print("Eleitor não encontrado.")
         return
 
     exibir_eleitor(eleitor)
 
-    print("\nDigite os novos dados (Enter para manter o atual):")
+    print("\n=== Digite os novos dados (Enter para manter o atual): ===")
 
     novo_nome = input("Novo nome [" + eleitor["nome"] + "]: ")
     if novo_nome == "":
@@ -266,7 +266,7 @@ def editar():
     if sucesso:
         print("Eleitor editado com sucesso!")
     else:
-        print("Erro ao editar. Verifique se o novo CPF ou titulo ja existe.")
+        print("Erro ao editar. Verifique se o novo CPF ou titulo já existe.")
 
 
 def remover():
@@ -279,17 +279,17 @@ def remover():
     Returns:
         bool: Resultado da funcao.
     """
-    print("\n REMOVER ELEITOR ")
+    print("\n=== REMOVER ELEITOR ===")
     titulo_busca = input("Digite o Titulo do eleitor que deseja remover: ")
     eleitor = buscar_eleitor_por_titulo(titulo_busca)
 
     if not eleitor:
-        print("Eleitor nao encontrado.")
+        print("Eleitor não encontrado.")
         return
 
     exibir_eleitor(eleitor)
 
-    confirmacao = input("\nTem certeza que deseja remover este eleitor? (s/n): ")
+    confirmacao = input("\nTem certeza que deseja remover este eleitor? (S/N): ")
 
     if confirmacao.lower() == "s":
         sucesso = remover_eleitor(titulo_busca)
@@ -299,7 +299,7 @@ def remover():
         else:
             print("Erro ao remover eleitor.")
     else:
-        print("Remocao cancelada.")
+        print("Remoção cancelada.")
 
 
 def menu_candidatos():
@@ -316,7 +316,7 @@ def menu_candidatos():
 
     try:
         while opcao != "0":
-            print("\n GERENCIAMENTO DE CANDIDATOS")
+            print("\n=== GERENCIAMENTO DE CANDIDATOS ===")
             print("1 - Cadastrar Candidato")
             print("2 - Listar Candidatos")
             print("3 - Buscar Candidato por Numero")
@@ -339,9 +339,9 @@ def menu_candidatos():
             elif opcao == "0":
                 return
             else:
-                print("Opcao invalida!")
+                print("Opção Inválida!")
     except:
-        print("Opcao Invalida!")
+        print("Opção Inválida!")
 
 
 def cadastrar_cand():
@@ -354,7 +354,7 @@ def cadastrar_cand():
     Returns:
         None: Resultado da funcao.
     """
-    print("\n CADASTRO DE CANDIDATO ")
+    print("\n=== CADASTRO DE CANDIDATO ===")
     nome = input("Nome do candidato: ")
     partido = input("Partido: ")
 
@@ -392,7 +392,7 @@ def listar_cand():
     """
     candidatos = listar_candidatos()
 
-    print("\n LISTA DE CANDIDATOS ")
+    print("\n=== LISTA DE CANDIDATOS ===")
 
     if not candidatos:
         print("Nenhum candidato encontrado.")
@@ -411,11 +411,11 @@ def buscar_cand():
     Returns:
         list: Resultado da funcao.
     """
-    print("\n BUSCA DE CANDIDATO ")
+    print("\n=== BUSCA DE CANDIDATO ===")
     numero = input("Digite o numero do candidato: ")
 
     while not numero.isdigit():
-        print("Numero invalido! Digite apenas numeros.")
+        print("Numero inválido! Digite apenas numeros.")
         numero = input("Digite o numero do candidato: ")
 
     numero = int(numero)
@@ -424,7 +424,7 @@ def buscar_cand():
     if candidato:
         exibir_candidato(candidato)
     else:
-        print("Candidato nao encontrado.")
+        print("Candidato não encontrado.")
 
 
 def exibir_candidato(candidato):
@@ -453,7 +453,7 @@ def editar_cand():
     Returns:
         bool: Resultado da funcao.
     """
-    print("\n EDITAR CANDIDATO ")
+    print("\n=== EDITAR CANDIDATO ===")
     numero = input("Digite o numero do candidato que deseja editar: ")
 
     while not numero.isdigit():
@@ -513,7 +513,7 @@ def remover_cand():
     Returns:
         bool: Resultado da funcao.
     """
-    print("\n--- REMOVER CANDIDATO ---")
+    print("\n=== REMOVER CANDIDATO ===")
     numero = input("Digite o numero do candidato que deseja remover: ")
 
     while not numero.isdigit():
@@ -524,12 +524,12 @@ def remover_cand():
     candidato = buscar_candidato_por_numero(numero)
 
     if not candidato:
-        print("Candidato nao encontrado.")
+        print("Candidato não encontrado.")
         return
 
     exibir_candidato(candidato)
 
-    confirmacao = input("\nTem certeza que deseja remover este candidato? (s/n): ")
+    confirmacao = input("\nTem certeza que deseja remover este candidato? (S/N): ")
 
     if confirmacao.lower() == "s":
         sucesso = remover_candidato(numero)
@@ -539,4 +539,4 @@ def remover_cand():
         else:
             print("Erro ao remover candidato.")
     else:
-        print("Remocao cancelada.")
+        print("Remoção cancelada.")
