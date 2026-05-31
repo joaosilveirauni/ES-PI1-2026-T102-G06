@@ -16,9 +16,9 @@ def auditoria():
 
     try:
         while opcao != "0":
-            print("\n=== AUDITORIA DA VOTACAO ===")
-            print("1 - Exibir Logs de Ocorrencias")
-            print("2 - Exibir Protocolos de Votacao")
+            print("\n=== AUDITORIA DA VOTAÇÃO ===")
+            print("1 - Exibir Logs de Ocorrências ")
+            print("2 - Exibir Protocolos de Votação")
             print("0 - Voltar")
 
             opcao = input("Escolha: ")
