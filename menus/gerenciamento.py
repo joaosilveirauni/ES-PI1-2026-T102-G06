@@ -20,7 +20,7 @@ def menu_gerenciamento():
     try:
         os.system('cls')
         while opcao != "0":
-            print("\n GERENCIAMENTO ")
+            print("\n==== GERENCIAMENTO ====")
             print("1 - Gerenciar Eleitores")
             print("2 - Gerenciar Candidatos")
             print("3 - Ver Auditoria")
