@@ -38,6 +38,6 @@ def auditoria():
             elif opcao == "0":
                 return
             else:
-                print("Opcao invalida!")
+                print("Opção Inválida!")
     except Exception as erro:
         print("Erro na auditoria:", erro)
