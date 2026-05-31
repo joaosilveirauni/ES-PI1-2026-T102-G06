@@ -59,10 +59,10 @@ def exibir_ocorrencias():
     ocorrencias = listar_ocorrencias()
 
     if not ocorrencias:
-        print("\nNenhuma ocorrencia encontrada.")
+        print("\nNenhuma ocorrência encontrada.")
         return
 
-    print("\n===== LOGS DE OCORRENCIAS =====")
+    print("\n===== LOGS DE OCORRÊNCIAS =====")
 
     for linha in ocorrencias:
         print(linha.strip())
